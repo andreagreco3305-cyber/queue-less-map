@@ -66,7 +66,7 @@ export function OnboardingFlow() {
             <span className="text-stone-300 text-4xl">RIPRENDITI IL TEMPO.</span>
           </h1>
           <p className="mt-6 text-lg font-medium leading-relaxed text-stone-500">
-            QueueLess è l'app per chi non vuole aspettare. Seleziona il bar, ordina in un tap e ritira senza attese.
+            QueueLess è l&apos;app per chi non vuole aspettare. Seleziona il bar, ordina in un tap e ritira senza attese.
           </p>
         </section>
 

@@ -143,7 +143,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       return {};
     },
-    [supabase],
+    [supabase, configError],
   );
 
   const signInAsDemo = useCallback(() => {
@@ -157,7 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       access_token: "demo-token",
       refresh_token: "demo-refresh",
       expires_in: 3600,
-      token_type: "bearer",
+      token_type: "bearer" as const,
       user: { id: "demo-id", email: "demo@queueless.it", email_confirmed_at: new Date().toISOString() } as any,
     };
     setSession(demoSession);
@@ -177,7 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) return { error: error.message };
       return {};
     },
-    [supabase],
+    [supabase, configError],
   );
 
   const user = mapUser(session?.user ?? null);
