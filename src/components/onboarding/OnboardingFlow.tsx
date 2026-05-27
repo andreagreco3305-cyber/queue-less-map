@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { useAuth } from "@/context/AuthContext";
-import { OnboardingCarousel } from "./OnboardingCarousel";
 import { SignUpPanel } from "./SignUpPanel";
 
 export function OnboardingFlow() {
@@ -53,20 +52,37 @@ export function OnboardingFlow() {
 
   return (
     <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-white">
-      <header className="flex px-10 pt-[max(2rem,env(safe-area-inset-top))]">
-        <Logo href={undefined} size="md" markOnly />
+      {/* Header con Logo Sempre Visibile */}
+      <header className="flex items-center justify-center border-b border-stone-100 py-6">
+        <Logo href={undefined} size="md" showText={true} />
       </header>
 
-      <OnboardingCarousel />
+      <div className="flex flex-1 flex-col px-10 pt-12">
+        {/* Slogan Statico e d'Impatto */}
+        <section className="mb-12">
+          <h1 className="text-5xl font-black leading-[1] tracking-tighter text-black">
+            ORDINA.<br />
+            SALTA LA FILA.<br />
+            <span className="text-stone-300 text-4xl">RIPRENDITI IL TEMPO.</span>
+          </h1>
+          <p className="mt-6 text-lg font-medium leading-relaxed text-stone-500">
+            QueueLess è l'app per chi non vuole aspettare. Seleziona il bar, ordina in un tap e ritira senza attese.
+          </p>
+        </section>
 
-      <footer className="shrink-0 px-10 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
-        <SignUpPanel
-          errorMessage={error}
-          onSignUp={handleSignUp}
-          onSignIn={handleSignIn}
-        />
-        <p className="mt-8 text-center text-[11px] font-medium tracking-wide text-stone-400 uppercase">
-          Efficienza senza compromessi
+        {/* Form Immediato */}
+        <section className="mt-auto pb-10">
+          <SignUpPanel
+            errorMessage={error}
+            onSignUp={handleSignUp}
+            onSignIn={handleSignIn}
+          />
+        </section>
+      </div>
+
+      <footer className="px-10 pb-6 pt-4">
+        <p className="text-center text-[10px] font-bold tracking-[0.2em] text-stone-300 uppercase">
+          Static & High Performance
         </p>
       </footer>
     </main>
