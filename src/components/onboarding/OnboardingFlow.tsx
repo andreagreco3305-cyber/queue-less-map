@@ -53,27 +53,28 @@ export function OnboardingFlow() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-white">
+    <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-white shadow-[0_0_100px_rgba(0,0,0,0.05)] border-x border-stone-100">
       {/* Header con Logo Sempre Visibile */}
-      <header className="flex items-center justify-center border-b border-stone-100 py-6">
-        <Logo href={undefined} size="md" showText={true} />
+      <header className="flex items-center justify-center border-b-2 border-black py-8 bg-white sticky top-0 z-10">
+        <Logo href={undefined} size="lg" showText={true} />
       </header>
 
-      <div className="flex flex-1 flex-col px-10 pt-12">
+      <div className="flex flex-1 flex-col px-10 pt-16">
         {/* Slogan Statico e d'Impatto */}
-        <section className="mb-12">
-          <h1 className="text-5xl font-black leading-[1] tracking-tighter text-black">
+        <section className="mb-16">
+          <h1 className="text-[54px] font-[1000] leading-[0.9] tracking-[-0.05em] text-black uppercase italic">
             ORDINA.<br />
-            SALTA LA FILA.<br />
-            <span className="text-stone-300 text-4xl">RIPRENDITI IL TEMPO.</span>
+            SALTA.<br />
+            <span className="text-stone-300">VIVI.</span>
           </h1>
-          <p className="mt-6 text-lg font-medium leading-relaxed text-stone-500">
-            QueueLess è l&apos;app per chi non vuole aspettare. Seleziona il bar, ordina in un tap e ritira senza attese.
+          <p className="mt-8 text-xl font-bold leading-tight text-black/40 uppercase tracking-tight">
+            Il predatore non aspetta in fila. <br />
+            Prendi il tuo caffè e vai.
           </p>
         </section>
 
         {/* Form Immediato */}
-        <section className="mt-auto pb-10">
+        <section className="mt-auto pb-12">
           <SignUpPanel
             errorMessage={error}
             onSignUp={handleSignUp}
@@ -82,9 +83,9 @@ export function OnboardingFlow() {
         </section>
       </div>
 
-      <footer className="px-10 pb-6 pt-4">
-        <p className="text-center text-[10px] font-bold tracking-[0.2em] text-stone-300 uppercase">
-          Static & High Performance
+      <footer className="px-10 pb-8 pt-4 border-t border-stone-50">
+        <p className="text-center text-[9px] font-black tracking-[0.4em] text-stone-200 uppercase">
+          QueueLess Ultra Engine v2.0
         </p>
       </footer>
     </main>
