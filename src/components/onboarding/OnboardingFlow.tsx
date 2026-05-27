@@ -61,26 +61,26 @@ export function OnboardingFlow() {
         <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
       </header>
 
-      <div className="flex flex-1 flex-col px-10 pt-16">
-        {/* Slogan Elite */}
-        <section className="mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 rounded-full mb-8">
+      <div className="flex flex-1 flex-col px-10 pt-12">
+        {/* Slogan Elite Ripristinato */}
+        <section className="mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 rounded-full mb-6">
             <span className="h-1 w-1 rounded-full bg-black" />
             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black">Precision Ordering</p>
           </div>
-          <h1 className="text-[68px] crazy-title text-black glow-text -ml-1">
+          <h1 className="text-[58px] crazy-title text-black leading-[0.85] -ml-1">
             ORDINA.<br />
             SALTA.<br />
-            <span className="text-stone-200">VIVI.</span>
+            <span className="text-stone-200">RIPRENDITI<br />IL TEMPO.</span>
           </h1>
-          <p className="mt-8 text-xl font-bold leading-tight text-stone-400 uppercase tracking-tight">
+          <p className="mt-6 text-lg font-bold leading-tight text-stone-400 uppercase tracking-tight">
             Non sprecare la vita in coda. <br />
             L&apos;efficienza è l&apos;unico lusso.
           </p>
         </section>
 
         {/* Form Integrato */}
-        <section className="mt-auto pb-16">
+        <section className="mt-auto pb-10">
           <SignUpPanel
             errorMessage={error}
             onSignUp={handleSignUp}
