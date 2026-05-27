@@ -61,7 +61,7 @@ export function OnboardingFlow() {
         <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
       </header>
 
-      <div className="flex flex-1 flex-col px-10 pt-12">
+      <div className="flex flex-1 flex-col px-10 pt-28">
         {/* Slogan Elite Ripristinato */}
         <section className="mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 rounded-full mb-6">
@@ -73,10 +73,6 @@ export function OnboardingFlow() {
             SALTA.<br />
             <span className="text-stone-200">RIPRENDITI<br />IL TEMPO.</span>
           </h1>
-          <p className="mt-6 text-lg font-bold leading-tight text-stone-400 uppercase tracking-tight">
-            Non sprecare la vita in coda. <br />
-            L&apos;efficienza è l&apos;unico lusso.
-          </p>
         </section>
 
         {/* Form Integrato */}

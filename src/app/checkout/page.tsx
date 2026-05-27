@@ -1,161 +1,110 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { CheckCircle2, CalendarClock, Zap } from "lucide-react";
-import { AppShell } from "@/components/layout/AppShell";
-import { RequireAuth } from "@/components/auth/RequireAuth";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/data/bars";
-
-function CheckoutContent() {
-  const { lines, subtotal, itemCount, clearCart, pickup } = useCart();
-  const [done, setDone] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [orderCode, setOrderCode] = useState("");
-
-  if (lines.length === 0 && !done) {
-    return (
-      <AppShell title="Checkout" backHref="/cart" showChat={false}>
-        <div className="px-6 py-12 text-center">
-          <p className="text-stone-500">Carrello vuoto.</p>
-          <Link href="/home" className="mt-4 inline-block text-indigo-600">
-            Torna ai bar
-          </Link>
-        </div>
-      </AppShell>
-    );
-  }
-
-  const placeOrder = async () => {
-    if (!pickup || lines.length === 0) {
-      setError("Seleziona un orario di ritiro.");
-      return;
-    }
-
-    setError(null);
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          barId: lines[0].barId,
-          barName: lines[0].barName,
-          pickupAt: pickup.iso,
-          pickupLabel: pickup.label,
-          total: subtotal + 0.3,
-          items: lines.map((l) => ({
-            itemId: l.itemId,
-            itemName: l.itemName,
-            price: l.price,
-            quantity: l.quantity,
-          })),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Ordine non riuscito.");
-        return;
-      }
-      setOrderCode(data.code);
-      setDone(true);
-      clearCart();
-    } catch {
-      setError("Errore di rete.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (done) {
-    return (
-      <AppShell showCart={false} showChat={false}>
-        <div className="px-6 py-12 text-center">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100">
-            <CheckCircle2 className="h-10 w-10 text-emerald-600" />
-          </div>
-          <h1 className="text-2xl font-bold">Ordine confermato!</h1>
-          <p className="mt-2 text-sm text-stone-500">
-            Codice: <strong className="text-indigo-600">{orderCode}</strong>
-          </p>
-          {pickup && (
-            <p className="mt-3 flex items-center justify-center gap-2 text-sm text-stone-600">
-              <CalendarClock className="h-4 w-4" />
-              {pickup.label}
-            </p>
-          )}
-          <p className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-emerald-700">
-            <Zap className="h-4 w-4" />
-            Ritiro VIP al banco
-          </p>
-          <Link
-            href="/home"
-            className="mt-8 inline-block rounded-2xl bg-indigo-600 px-8 py-3 text-sm font-bold text-white"
-          >
-            Torna ai bar
-          </Link>
-        </div>
-      </AppShell>
-    );
-  }
-
-  const serviceFee = 0.3;
-  const total = subtotal + serviceFee;
-
-  return (
-    <AppShell title="Checkout" backHref="/cart" showChat={false}>
-      <div className="px-4 pt-4">
-        <p className="text-sm text-stone-500">{lines[0]?.barName}</p>
-        {pickup && (
-          <p className="mt-2 flex items-center gap-2 rounded-xl bg-indigo-50 px-3 py-2 text-sm text-indigo-900">
-            <CalendarClock className="h-4 w-4" />
-            {pickup.label}
-          </p>
-        )}
-
-        <ul className="mt-4 space-y-2 rounded-2xl border border-stone-200 bg-white p-4">
-          {lines.map((line) => (
-            <li key={line.itemId} className="flex justify-between text-sm">
-              <span>
-                {line.quantity}× {line.itemName}
-              </span>
-              <span>{formatPrice(line.price * line.quantity)}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-4 rounded-2xl border border-stone-200 bg-white p-4 text-sm">
-          <div className="flex justify-between">
-            <span>Totale</span>
-            <span className="font-bold text-indigo-600">{formatPrice(total)}</span>
-          </div>
-        </div>
-
-        {error && (
-          <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="button"
-          disabled={submitting || !pickup}
-          onClick={placeOrder}
-          className="mt-6 w-full rounded-2xl bg-indigo-600 py-4 text-sm font-bold text-white disabled:bg-stone-300"
-        >
-          {submitting ? "Conferma…" : "Conferma ordine"}
-        </button>
-      </div>
-    </AppShell>
-  );
-}
+import { Check, ArrowRight, ShoppingBag, Clock, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { AppShell } from "@/components/layout/AppShell";
 
 export default function CheckoutPage() {
+  const { lines, subtotal, clearCart, pickup } = useCart();
+  const [status, setStatus] = useState<"idle" | "processing" | "success">("idle");
+  const [orderCode, setOrderCode] = useState("");
+
+  const handlePay = () => {
+    setStatus("processing");
+    setTimeout(() => {
+      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      setOrderCode(code);
+      setStatus("success");
+      clearCart();
+    }, 2000);
+  };
+
+  if (status === "success") {
+    return (
+      <AppShell title="Successo" showCart={false}>
+        <div className="flex min-h-[80dvh] flex-col items-center justify-center p-10 text-center animate-crazy-in">
+          <div className="mb-10 flex h-32 w-32 items-center justify-center rounded-[3rem] bg-black text-white shadow-2xl shadow-black/20 relative">
+            <Check className="h-14 w-14" strokeWidth={3} />
+            <div className="absolute -top-2 -right-2 h-8 w-8 bg-emerald-500 rounded-full border-4 border-white flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-white fill-white" />
+            </div>
+          </div>
+          
+          <h2 className="crazy-title text-4xl mb-4 leading-none">MISSIONE<br />COMPIUTA</h2>
+          <p className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-12 italic">Il predatore ha colpito ancora. <br />Ritira il tuo ordine al bancone.</p>
+          
+          <div className="crazy-card !bg-stone-50 border-none w-full !p-8 mb-12">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-300 mb-2">Codice di Ritiro</p>
+            <p className="text-5xl font-black tracking-tighter text-black glow-text italic">{orderCode}</p>
+          </div>
+
+          <Link href="/home" className="crazy-button">
+            <div className="flex w-full items-center justify-between px-6">
+                <span>NUOVA CACCIA</span>
+                <ArrowRight className="h-6 w-6 stroke-[3]" />
+            </div>
+          </Link>
+        </div>
+      </AppShell>
+    );
+  }
+
   return (
-    <RequireAuth>
-      <CheckoutContent />
-    </RequireAuth>
+    <AppShell title="Pagamento" backHref="/cart">
+      <div className="px-6 pt-10 pb-32">
+        <div className="mb-12">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-300 mb-2 italic">Ultimo Step</p>
+          <h1 className="crazy-title text-5xl text-black">PAGAMENTO<br />RAPIDO</h1>
+        </div>
+
+        <div className="crazy-card border-stone-100 shadow-xl shadow-black/[0.02] !p-8 mb-10">
+          <div className="flex justify-between items-center mb-8 border-b-2 border-stone-50 pb-6">
+            <span className="text-sm font-black uppercase tracking-widest text-stone-400 italic">Riepilogo</span>
+            <span className="text-[10px] font-black text-white bg-black px-2 py-0.5 rounded uppercase">{lines.length} Pezzi</span>
+          </div>
+
+          <div className="space-y-4 mb-10">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold text-stone-400 uppercase tracking-widest italic">Totale Ordine</span>
+              <span className="text-2xl font-black text-black tracking-tight italic">{formatPrice(subtotal)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold text-stone-400 uppercase tracking-widest italic">Orario Ritiro</span>
+              <span className="text-xs font-black text-black bg-stone-100 px-2 py-0.5 rounded italic">{pickup?.label ?? "Asap"}</span>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-100 flex items-center gap-3">
+             <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
+                <Check className="h-4 w-4 text-white" strokeWidth={3} />
+             </div>
+             <p className="text-[10px] font-black uppercase tracking-widest text-stone-500">Stripe Secure Payment</p>
+          </div>
+        </div>
+
+        <div className="fixed bottom-8 inset-x-0 px-6 z-40">
+           <button
+            onClick={handlePay}
+            disabled={status === "processing"}
+            className="crazy-button shadow-2xl"
+          >
+            {status === "processing" ? (
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+                <span className="text-[10px] tracking-[0.3em]">ANALISI TRANSAZIONE...</span>
+              </div>
+            ) : (
+              <div className="flex w-full items-center justify-between px-4">
+                <span>PAGA ORA</span>
+                <ArrowRight className="h-6 w-6 stroke-[3]" />
+              </div>
+            )}
+          </button>
+        </div>
+      </div>
+    </AppShell>
   );
 }

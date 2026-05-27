@@ -1,37 +1,25 @@
 "use client";
 
-import Link from "next/link";
-import { Minus, Plus, Trash2, CalendarClock } from "lucide-react";
-import { AppShell } from "@/components/layout/AppShell";
-import { RequireAuth } from "@/components/auth/RequireAuth";
-import { PickupSlotPicker } from "@/components/pickup/PickupSlotPicker";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/data/bars";
+import { Plus, Minus, Trash2, ArrowRight, ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { AppShell } from "@/components/layout/AppShell";
 
-function CartContent() {
-  const {
-    lines,
-    subtotal,
-    itemCount,
-    updateQuantity,
-    removeLine,
-    barId,
-    pickup,
-  } = useCart();
+export default function CartPage() {
+  const { lines, subtotal, updateQuantity, removeLine, pickup, barId } = useCart();
 
   if (lines.length === 0) {
     return (
-      <AppShell title="Carrello" backHref="/home">
-        <div className="px-6 py-16 text-center">
-          <p className="text-lg font-bold text-stone-900">Carrello vuoto</p>
-          <p className="mt-2 text-sm text-stone-500">
-            Scegli un bar e aggiungi qualcosa dal menu.
-          </p>
-          <Link
-            href="/home"
-            className="mt-6 inline-block rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white"
-          >
-            Scegli un bar
+      <AppShell title="Carrello">
+        <div className="flex min-h-[60dvh] flex-col items-center justify-center p-10 text-center">
+          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-[2.5rem] bg-stone-50 border-2 border-dashed border-stone-200">
+            <ShoppingBag className="h-10 w-10 text-stone-300" strokeWidth={1.5} />
+          </div>
+          <h2 className="crazy-title text-3xl mb-3">Vuoto.</h2>
+          <p className="text-sm font-bold text-stone-400 uppercase tracking-tight mb-10">Il predatore ha fame. <br />Aggiungi qualcosa al bottino.</p>
+          <Link href="/home" className="crazy-button">
+             <span>Esplora Bar</span>
           </Link>
         </div>
       </AppShell>
@@ -39,99 +27,70 @@ function CartContent() {
   }
 
   return (
-    <AppShell title="Carrello" backHref={barId ? `/bars/${barId}` : "/home"}>
-      <div className="px-4 pt-4">
-        <p className="text-sm text-stone-500">{lines[0].barName}</p>
-
-        {barId && (
-          <div id="pickup" className="mt-4">
-            <PickupSlotPicker barId={barId} compact />
+    <AppShell title="Riepilogo" backHref="/home">
+      <div className="px-6 pt-10 pb-32">
+        <div className="mb-10">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 mb-2 italic">
+            <span className="h-1.5 w-1.5 rounded-full bg-black" />
+            Ordine da {lines[0].barName}
           </div>
-        )}
+          <h1 className="crazy-title text-5xl text-black">IL TUO<br />BOTTINO</h1>
+        </div>
 
-        {pickup && (
-          <p className="mt-3 flex items-center gap-2 rounded-xl bg-indigo-50 px-3 py-2 text-xs font-medium text-indigo-900">
-            <CalendarClock className="h-4 w-4 shrink-0" />
-            Ritiro: {pickup.label}
-          </p>
-        )}
-
-        <ul className="mt-4 space-y-3">
+        <div className="space-y-6">
           {lines.map((line) => (
-            <li
-              key={line.itemId}
-              className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4"
-            >
+            <div key={line.itemId} className="crazy-card !p-6 flex items-center justify-between border-stone-100 shadow-xl shadow-black/[0.02]">
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-stone-900">{line.itemName}</p>
-                <p className="text-sm text-indigo-600">
-                  {formatPrice(line.price)}
+                <h3 className="crazy-title text-xl text-black">{line.itemName}</h3>
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mt-1">
+                  {formatPrice(line.price)} cad.
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-4 bg-stone-50 p-2 rounded-2xl border border-stone-100">
                 <button
-                  type="button"
-                  onClick={() =>
-                    updateQuantity(line.itemId, line.quantity - 1)
-                  }
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100"
+                  onClick={() => updateQuantity(line.itemId, line.quantity - 1)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-stone-200 text-black shadow-sm active:scale-90"
                 >
-                  <Minus className="h-4 w-4" />
+                  {line.quantity === 1 ? <Trash2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
                 </button>
-                <span className="w-6 text-center text-sm font-bold">
-                  {line.quantity}
-                </span>
+                <span className="text-sm font-black w-4 text-center">{line.quantity}</span>
                 <button
-                  type="button"
-                  onClick={() =>
-                    updateQuantity(line.itemId, line.quantity + 1)
-                  }
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100"
+                  onClick={() => updateQuantity(line.itemId, line.quantity + 1)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white shadow-md active:scale-90"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
-                <button
-                  type="button"
-                  onClick={() => removeLine(line.itemId)}
-                  className="ml-1 flex h-8 w-8 items-center justify-center rounded-lg text-red-500 hover:bg-red-50"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
-
-        <div className="mt-6 rounded-2xl border border-stone-200 bg-white p-4">
-          <div className="flex justify-between text-sm text-stone-600">
-            <span>Articoli ({itemCount})</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
-          <div className="mt-2 flex justify-between border-t border-stone-100 pt-2 font-bold text-stone-900">
-            <span>Totale</span>
-            <span className="text-indigo-600">{formatPrice(subtotal)}</span>
-          </div>
         </div>
 
-        <Link
-          href={pickup ? "/checkout" : "#pickup"}
-          className={`mt-6 block rounded-2xl py-4 text-center text-sm font-bold ${
-            pickup
-              ? "bg-indigo-600 text-white shadow-lg hover:bg-indigo-500"
-              : "bg-stone-300 text-stone-600"
-          }`}
-        >
-          {pickup ? "Vai al checkout" : "Seleziona orario di ritiro"}
-        </Link>
+        {pickup && (
+          <div className="mt-12 p-6 rounded-[2rem] bg-stone-50 border border-stone-100 italic">
+             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400 mb-1">Punto di Incontro</p>
+             <p className="text-sm font-bold text-black uppercase tracking-tight">Ritiro previsto alle {pickup.label}</p>
+          </div>
+        )}
+
+        <div className="fixed bottom-8 inset-x-0 px-6 z-40">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-end justify-between px-2 mb-2">
+              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-stone-400 italic">Totale Stimato</span>
+              <span className="text-4xl font-black text-black tracking-tighter italic italic italic">{formatPrice(subtotal)}</span>
+            </div>
+            <Link
+              href="/checkout"
+              className="crazy-button shadow-2xl"
+            >
+              <div className="flex w-full items-center justify-between px-4">
+                <span>CONFERMA ORDINE</span>
+                <ArrowRight className="h-6 w-6 stroke-[3]" />
+              </div>
+            </Link>
+          </div>
+        </div>
       </div>
     </AppShell>
-  );
-}
-
-export default function CartPage() {
-  return (
-    <RequireAuth>
-      <CartContent />
-    </RequireAuth>
   );
 }
