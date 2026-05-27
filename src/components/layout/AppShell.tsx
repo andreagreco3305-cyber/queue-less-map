@@ -27,7 +27,7 @@ export function AppShell({
 
   return (
     <div className="mx-auto min-h-[100dvh] max-w-md bg-white text-black selection:bg-black selection:text-white">
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-50 bg-white/80 px-6 py-6 backdrop-blur-2xl pt-[max(1.5rem,env(safe-area-inset-top))]">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-50 bg-white/80 px-6 py-6 backdrop-blur-2xl pt-[max(3.5rem,env(safe-area-inset-top))]">
         <div className="flex min-w-0 flex-1 items-center gap-4">
           {backHref ? (
             <Link

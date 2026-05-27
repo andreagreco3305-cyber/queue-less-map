@@ -56,7 +56,7 @@ export function OnboardingFlow() {
   return (
     <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-white text-black selection:bg-black selection:text-white">
       {/* Header Premium */}
-      <header className="flex items-center justify-between px-10 py-8 border-b border-stone-50">
+      <header className="flex items-center justify-between px-10 pt-16 pb-8 border-b border-stone-50">
         <Logo href={undefined} size="md" showText={true} />
         <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
       </header>
