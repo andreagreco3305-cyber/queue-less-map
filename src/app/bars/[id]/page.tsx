@@ -10,7 +10,7 @@ import { RequireAuth } from "@/components/auth/RequireAuth";
 import { PickupSlotPicker } from "@/components/pickup/PickupSlotPicker";
 import { getBarById, type MenuItem } from "@/data/bars";
 import { useCart } from "@/context/CartContext";
-import { Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 
 const CATEGORIES: MenuItem["category"][] = [
   "caffè",
@@ -44,14 +44,14 @@ function BarMenuContent() {
   if (!bar) {
     return (
       <main className="flex min-h-[100dvh] items-center justify-center px-6">
-        <p className="text-stone-500">Bar non trovato.</p>
+        <p className="text-stone-500 font-bold uppercase tracking-widest">Bar non trovato.</p>
       </main>
     );
   }
 
   return (
-    <AppShell backHref="/home">
-      <div className="relative aspect-[2/1] w-full bg-stone-200">
+    <AppShell backHref="/home" title={bar.name}>
+      <div className="relative aspect-[16/9] w-full bg-stone-100 overflow-hidden">
         <Image
           src={bar.image}
           alt={bar.name}
@@ -60,26 +60,34 @@ function BarMenuContent() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <h1 className="text-xl font-bold text-white">{bar.name}</h1>
-          <p className="flex items-center gap-1 text-sm text-white/90">
-            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-            {bar.rating} · {bar.tagline}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70" />
+        <div className="absolute bottom-6 left-6 right-6">
+          <div className="flex items-center gap-2 mb-1">
+            <Star className="h-4 w-4 fill-white text-white" />
+            <span className="text-sm font-black text-white">{bar.rating}</span>
+          </div>
+          <h1 className="text-4xl font-black text-white uppercase tracking-tighter leading-none">{bar.name}</h1>
+          <p className="text-xs font-bold text-stone-300 uppercase tracking-widest mt-1 opacity-80">
+            {bar.tagline}
           </p>
         </div>
       </div>
 
-      <div className="px-4 pt-4">
-        <PickupSlotPicker barId={bar.id} />
+      <div className="px-6 pt-8 pb-20">
+        <div id="pickup" className="mb-10">
+          <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-stone-400">
+            Pianifica il Ritiro
+          </h2>
+          <PickupSlotPicker barId={bar.id} />
+        </div>
 
-        <div className="mt-6 space-y-6">
+        <div className="space-y-12">
           {menuByCategory.map((group) => (
             <section key={group.category}>
-              <h2 className="mb-1 text-xs font-bold uppercase tracking-wider text-stone-400">
+              <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.2em] text-stone-400 border-l-2 border-black pl-3 ml-1">
                 {group.label}
               </h2>
-              <div className="rounded-2xl border border-stone-200 bg-white px-4">
+              <div className="divide-y divide-stone-100 bg-white rounded-3xl border border-stone-100 overflow-hidden shadow-sm">
                 {group.items.map((item) => (
                   <MenuItemRow
                     key={item.id}
@@ -94,13 +102,13 @@ function BarMenuContent() {
         </div>
 
         {itemCount > 0 && (
-          <div className="sticky bottom-4 mt-8 pb-2">
+          <div className="fixed bottom-6 inset-x-0 px-6 z-20">
             <Link
               href={pickup ? "/cart" : "#pickup"}
-              className={`block rounded-2xl py-4 text-center text-sm font-bold shadow-lg ${
+              className={`flex h-16 w-full items-center justify-between px-8 rounded-2xl text-sm font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-[1.02] active:scale-95 ${
                 pickup
-                  ? "bg-indigo-600 text-white hover:bg-indigo-500"
-                  : "bg-stone-300 text-stone-600"
+                  ? "bg-black text-white"
+                  : "bg-stone-200 text-stone-500"
               }`}
               onClick={(e) => {
                 if (!pickup) {
@@ -111,9 +119,11 @@ function BarMenuContent() {
                 }
               }}
             >
-              {pickup
-                ? `Vai al carrello (${itemCount})`
-                : "Scegli orario di ritiro prima"}
+              <span>{pickup ? "Vedi Carrello" : "Scegli l'orario"}</span>
+              <div className="flex items-center gap-3">
+                {pickup && <span className="bg-white/20 px-2 py-0.5 rounded text-[10px]">{itemCount} Articoli</span>}
+                <ArrowRight className="h-5 w-5" />
+              </div>
             </Link>
           </div>
         )}

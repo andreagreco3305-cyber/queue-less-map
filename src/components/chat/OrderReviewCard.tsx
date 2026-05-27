@@ -1,117 +1,79 @@
 "use client";
 
+import { useCart } from "@/context/CartContext";
+import { type OrderDraft } from "@/lib/ai/resolve-order";
+import { Check, Loader2, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { CalendarClock, MapPin, ShoppingBag, Loader2 } from "lucide-react";
-import type { OrderDraft } from "@/lib/ai/resolve-order";
-import { formatPrice } from "@/data/bars";
 
-type OrderReviewCardProps = {
-  draft: OrderDraft;
-  onConfirmed?: (code: string) => void;
-};
+export function OrderReviewCard({ draft }: { draft: OrderDraft }) {
+  const { addLine } = useCart();
+  const [status, setStatus] = useState<"idle" | "adding" | "success">("idle");
 
-export function OrderReviewCard({ draft, onConfirmed }: OrderReviewCardProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
-  const [code, setCode] = useState("");
-
-  const confirm = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          barId: draft.barId,
-          barName: draft.barName,
-          pickupAt: draft.time,
-          pickupLabel: draft.pickupLabel,
-          total: draft.price,
-          items: [
-            {
-              itemId: draft.itemId,
-              itemName: draft.itemName,
-              price: draft.price,
-              quantity: 1,
-            },
-          ],
-        }),
+  const onConfirm = async () => {
+    setStatus("adding");
+    // Simula aggiunta a carrello
+    setTimeout(() => {
+      addLine({
+        id: draft.itemId,
+        name: draft.itemName,
+        price: draft.price,
+        barId: draft.barId,
+        barName: draft.barName,
+        pickupTime: draft.time,
+        category: "caffè",
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error ?? "Conferma non riuscita.");
-        return;
-      }
-      setCode(data.code);
-      setDone(true);
-      onConfirmed?.(data.code);
-    } catch {
-      setError("Errore di rete. Riprova.");
-    } finally {
-      setLoading(false);
-    }
+      setStatus("success");
+    }, 800);
   };
 
-  if (done) {
-    return (
-      <div className="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-        <p className="text-sm font-bold text-emerald-900">Ordine confermato!</p>
-        <p className="mt-1 text-xs text-emerald-800">
-          Codice ritiro: <strong>{code}</strong>
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="mt-2 overflow-hidden rounded-2xl border border-indigo-200 bg-white shadow-sm">
-      <div className="bg-indigo-600 px-4 py-2">
-        <p className="text-xs font-bold uppercase tracking-wide text-indigo-100">
-          Rivedi ordine
-        </p>
-      </div>
-      <div className="space-y-2 p-4 text-sm">
-        <p className="flex items-center gap-2 font-semibold text-stone-900">
-          <MapPin className="h-4 w-4 text-indigo-600" />
+    <div className="rounded-[1.5rem] border border-stone-100 bg-white p-5 shadow-lg ring-1 ring-black/5">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-black" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+            Ordine Rilevato
+          </span>
+        </div>
+        <span className="text-xs font-black uppercase tracking-tight text-black bg-stone-100 px-2 py-0.5 rounded-md">
           {draft.barName}
-        </p>
-        <p className="flex items-center gap-2 text-stone-700">
-          <ShoppingBag className="h-4 w-4 text-stone-400" />
-          1× {draft.itemName}
-        </p>
-        <p className="flex items-center gap-2 text-stone-700">
-          <CalendarClock className="h-4 w-4 text-stone-400" />
-          {draft.pickupLabel}
-        </p>
-        <p className="border-t border-stone-100 pt-2 text-base font-bold text-indigo-600">
-          Totale stimato: {draft.estimatedTotal}
-        </p>
-        {error && (
-          <p className="rounded-lg bg-red-50 px-2 py-1 text-xs text-red-700">
-            {error}
-          </p>
-        )}
+        </span>
+      </div>
+
+      <div className="mb-5 space-y-3">
+        <div className="flex justify-between items-baseline">
+          <h4 className="text-xl font-black uppercase tracking-tighter text-black">
+            {draft.itemName}
+          </h4>
+          <span className="text-lg font-bold text-stone-900">{draft.estimatedTotal}</span>
+        </div>
+        
+        <div className="flex items-center gap-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
+          <span>Ritiro: {draft.pickupLabel}</span>
+        </div>
+      </div>
+
+      {status === "success" ? (
+        <div className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-50 text-sm font-bold text-emerald-600 animate-in fade-in zoom-in-95">
+          <Check className="h-5 w-5" />
+          Aggiunto al carrello
+        </div>
+      ) : (
         <button
-          type="button"
-          disabled={loading}
-          onClick={confirm}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:opacity-60"
+          onClick={onConfirm}
+          disabled={status === "adding"}
+          className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-black text-sm font-black uppercase tracking-widest text-white transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
         >
-          {loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Conferma in corso…
-            </>
+          {status === "adding" ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
           ) : (
-            "Conferma e Paga"
+            <>
+              Conferma e Paga
+              <ArrowRight className="h-4 w-4" />
+            </>
           )}
         </button>
-        <p className="text-center text-[10px] text-stone-400">
-          L&apos;ordine viene salvato solo dopo questo click
-        </p>
-      </div>
+      )}
     </div>
   );
 }

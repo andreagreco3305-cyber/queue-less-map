@@ -59,21 +59,31 @@ export function ChatAssistant() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition hover:bg-indigo-500 active:scale-95 max-md:right-4 md:right-[max(1rem,calc(50%-14rem))]"
+        className="fixed bottom-6 right-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white shadow-2xl transition-all hover:scale-105 active:scale-95"
         aria-label="Apri assistente AI"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-7 w-7" />
+        <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 border-2 border-white animate-pulse" />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center sm:p-4">
-          <div className="flex h-[min(85dvh,640px)] w-full max-w-md flex-col overflow-hidden rounded-t-3xl bg-stone-50 shadow-2xl sm:rounded-3xl">
-            <header className="flex items-center justify-between border-b border-stone-200 bg-white px-4 py-3">
-              <Logo href={undefined} size="sm" markOnly />
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center sm:p-6 animate-in fade-in duration-200">
+          <div className="flex h-[min(85dvh,700px)] w-full max-w-md flex-col overflow-hidden rounded-t-[2.5rem] bg-white shadow-[0_0_80px_rgba(0,0,0,0.3)] sm:rounded-[2.5rem]">
+            <header className="flex items-center justify-between border-b border-stone-100 bg-white px-6 py-5">
+              <div className="flex items-center gap-3">
+                <Logo href={undefined} size="sm" markOnly />
+                <div>
+                  <h2 className="text-sm font-black uppercase tracking-tighter">Assistant</h2>
+                  <div className="flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Always Live</span>
+                  </div>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="rounded-lg p-2 text-stone-500 hover:bg-stone-100"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 text-stone-500 transition-all hover:bg-stone-100 active:scale-90"
                 aria-label="Chiudi"
               >
                 <X className="h-5 w-5" />
@@ -82,16 +92,17 @@ export function ChatAssistant() {
 
             <div
               ref={scrollRef}
-              className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
+              className="flex-1 space-y-6 overflow-y-auto px-6 py-6 bg-stone-50/30"
             >
               {messages.length === 0 && (
-                <div className="rounded-2xl bg-indigo-50 p-4 text-sm text-indigo-900">
-                  <p className="font-semibold">Assistente Queue Less</p>
-                  <p className="mt-1 text-indigo-800/90">
-                    Prova:{" "}
-                    <em className="font-medium not-italic">
-                      ordinami un caffè al bar della statale alle 9
-                    </em>
+                <div className="rounded-[1.5rem] border border-stone-100 bg-white p-6 shadow-sm">
+                  <p className="text-xs font-black uppercase tracking-widest text-indigo-500 mb-2">Welcome</p>
+                  <h3 className="text-lg font-bold tracking-tight text-black leading-tight">
+                    Ciao. Cosa posso prepararti oggi?
+                  </h3>
+                  <p className="mt-2 text-sm font-medium text-stone-500 leading-relaxed">
+                    Puoi dirmi: <br />
+                    <span className="text-black italic">&quot;Prenotami un caffè al Tech Coffee alle 10:30&quot;</span>
                   </p>
                 </div>
               )}
@@ -104,19 +115,21 @@ export function ChatAssistant() {
                       )
                     : { drafts: [], errors: [] };
 
+                const isUser = m.role === "user";
+
                 return (
                   <div
                     key={m.id}
                     className={`flex flex-col gap-2 ${
-                      m.role === "user" ? "items-end" : "items-start"
+                      isUser ? "items-end" : "items-start"
                     }`}
                   >
                     {m.content ? (
                       <div
-                        className={`max-w-[90%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                          m.role === "user"
-                            ? "bg-indigo-600 text-white"
-                            : "bg-white text-stone-800 ring-1 ring-stone-200"
+                        className={`max-w-[85%] rounded-[1.2rem] px-5 py-3.5 text-sm font-medium leading-relaxed shadow-sm transition-all ${
+                          isUser
+                            ? "bg-black text-white rounded-tr-none"
+                            : "bg-white text-stone-800 ring-1 ring-stone-100 rounded-tl-none"
                         }`}
                       >
                         {m.content}
@@ -124,16 +137,16 @@ export function ChatAssistant() {
                     ) : null}
 
                     {errors.map((err, i) => (
-                      <p
+                      <div
                         key={`err-${i}`}
-                        className="max-w-[90%] rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-900"
+                        className="max-w-[85%] rounded-[1rem] bg-red-50 px-4 py-3 text-xs font-bold text-red-600 border border-red-100 uppercase tracking-tight"
                       >
                         {err}
-                      </p>
+                      </div>
                     ))}
 
                     {drafts.map((draft, i) => (
-                      <div key={`draft-${i}`} className="w-full max-w-[95%]">
+                      <div key={`draft-${i}`} className="w-full max-w-[95%] animate-in zoom-in-95 duration-300">
                         <OrderReviewCard draft={draft} />
                       </div>
                     ))}
@@ -142,37 +155,41 @@ export function ChatAssistant() {
               })}
 
               {isLoading && (
-                <div className="flex items-center gap-2 text-sm text-stone-500">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Assistente in elaborazione…
+                <div className="flex items-center gap-2 px-2 text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">
+                  <div className="flex gap-1">
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-stone-300" />
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-stone-300 [animation-delay:0.2s]" />
+                    <span className="h-1 w-1 animate-bounce rounded-full bg-stone-300 [animation-delay:0.4s]" />
+                  </div>
+                  Thinking
                 </div>
               )}
 
               {error && (
-                <p className="rounded-xl bg-red-50 px-3 py-2 text-xs text-red-700">
+                <div className="rounded-[1rem] border border-red-100 bg-red-50 p-4 text-xs font-bold text-red-700">
                   {error.message}
-                </p>
+                </div>
               )}
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="border-t border-stone-200 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+              className="border-t border-stone-100 bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
             >
-              <div className="flex gap-2">
+              <div className="relative flex items-center">
                 <input
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Messaggio…"
-                  className="flex-1 rounded-2xl border border-stone-200 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  placeholder="Scrivi qui..."
+                  className="h-14 w-full rounded-2xl bg-stone-100 px-6 pr-16 text-sm font-medium outline-none transition-all focus:bg-white focus:ring-4 focus:ring-black/5"
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white disabled:opacity-40"
+                  className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white transition-all active:scale-90 disabled:opacity-20"
                 >
-                  <Send className="h-5 w-5" />
+                  <Send className="h-4 w-4" />
                 </button>
               </div>
             </form>

@@ -6,71 +6,57 @@ import { BarCard } from "@/components/bars/BarCard";
 import { RequireAuth } from "@/components/auth/RequireAuth";
 import { useAuth } from "@/context/AuthContext";
 import { BARS } from "@/data/bars";
-import { LogOut, Sparkles } from "lucide-react";
+import { LogOut, Sparkles, MapPin } from "lucide-react";
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const welcome = searchParams.get("welcome") === "1";
   const { user, logout } = useAuth();
 
-  const universityBars = BARS.filter((b) => b.campus);
-  const cityBars = BARS.filter((b) => !b.campus);
-
   return (
     <AppShell>
-      <div className="px-4 pt-4">
+      <div className="px-6 pt-6">
         {welcome && (
-          <div className="mb-4 flex items-start gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-            <Sparkles className="mt-0.5 h-5 w-5 shrink-0" />
+          <div className="mb-6 flex items-start gap-3 rounded-[2rem] border border-black bg-black p-5 text-sm text-white shadow-2xl shadow-black/20 animate-in fade-in slide-in-from-top-4">
+            <Sparkles className="h-5 w-5 shrink-0 text-stone-400" />
             <div>
-              <p className="font-bold">Email confermata!</p>
-              <p className="mt-0.5">Ordina e salta la fila — prova anche l&apos;assistente AI.</p>
+              <p className="font-black uppercase tracking-tight">Accesso Completato</p>
+              <p className="mt-0.5 text-stone-400 font-medium tracking-tight leading-snug">Il tuo tempo è prezioso. Ordina ora e salta la fila.</p>
             </div>
           </div>
         )}
 
-        <div className="mb-5 flex items-start justify-between gap-2">
-          <div>
-            <h1 className="text-2xl font-bold text-stone-900">
-              Dove ordini oggi?
+        <div className="mb-8 flex items-end justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-stone-400">
+              <MapPin className="h-3 w-3" strokeWidth={3} />
+              Milano, IT
+            </div>
+            <h1 className="text-4xl font-black leading-none tracking-tighter text-black uppercase">
+              SCELTI<br />PER TE
             </h1>
-            <p className="mt-1 text-sm text-stone-500">
-              {user?.email
-                ? `Ciao, ${user.email.split("@")[0]}`
-                : "Bar a Milano"}
-            </p>
           </div>
+          
           <button
             type="button"
             onClick={() => logout().then(() => (window.location.href = "/"))}
-            className="flex items-center gap-1 rounded-xl px-2 py-1 text-xs text-stone-500 hover:bg-stone-100"
+            className="flex h-10 items-center gap-2 rounded-full border border-stone-100 px-4 text-[11px] font-black uppercase tracking-widest text-black transition-all hover:bg-stone-50 active:scale-95"
           >
-            <LogOut className="h-4 w-4" />
             Esci
           </button>
         </div>
 
-        <section className="mb-6">
-          <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400">
-            I più rapidi
-          </h2>
-          <div className="space-y-4">
-            {universityBars.map((bar) => (
-              <BarCard key={bar.id} bar={bar} />
-            ))}
-          </div>
-        </section>
+        <div className="space-y-6 pb-12">
+          {BARS.map((bar) => (
+            <BarCard key={bar.id} bar={bar} />
+          ))}
+        </div>
 
-        <section className="pb-4">
-          <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400">
-            Bar in città
-          </h2>
-          <div className="space-y-4">
-            {cityBars.map((bar) => (
-              <BarCard key={bar.id} bar={bar} />
-            ))}
-          </div>
-        </section>
+        <footer className="pb-8 pt-4 text-center">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-200">
+            Powered by QueueLess Engine
+          </p>
+        </footer>
       </div>
     </AppShell>
   );
