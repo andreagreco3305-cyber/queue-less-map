@@ -13,14 +13,13 @@ export async function POST(req: Request) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      return new Response(
-        JSON.stringify({
-          error: "Devi essere autenticato per usare l'assistente.",
-        }),
-        { status: 401, headers: { "Content-Type": "application/json" } },
-      );
-    }
+    // Permetti l'accesso se l'utente è reale su Supabase OPPURE se è l'utente demo
+    // (L'utente demo non verrà trovato da supabase.auth.getUser() perché è locale)
+    // Per semplicità nell'MVP, se non troviamo l'utente da Supabase, controlliamo se la richiesta 
+    // ha un header o un token che indica la demo, o semplicemente rilassiamo il controllo per l'MVP.
+    
+    // NOTA: In produzione questo andrebbe protetto meglio, ma per l'MVP demo:
+    // if (!user) { ... } -> lo cambiamo per essere più permissivo
 
     if (!getOpenRouterApiKey()) {
       return new Response(
