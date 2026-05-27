@@ -3,51 +3,58 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --stone-50: #fafafa;
-  --stone-100: #f5f5f5;
-  --stone-200: #e5e5e5;
-  --stone-300: #d4d4d4;
-  --stone-400: #a3a3a3;
+  --background: #000000;
+  --foreground: #ffffff;
+  --stone-50: #0a0a0a;
+  --stone-100: #111111;
+  --stone-200: #1c1c1c;
+  --stone-300: #262626;
+  --stone-400: #404040;
   --stone-500: #737373;
-  --stone-600: #525252;
-  --stone-700: #404040;
-  --stone-800: #262626;
-  --stone-900: #171717;
+  --stone-600: #a3a3a3;
+  --stone-700: #d4d4d4;
+  --stone-800: #e5e5e5;
+  --stone-900: #f5f5f5;
 }
 
 @layer base {
   body {
-    @apply bg-white text-black antialiased;
+    @apply bg-black text-white antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
 }
 
 @layer components {
   .crazy-title {
-    @apply font-black uppercase tracking-tighter leading-none;
+    @apply font-black uppercase tracking-tighter leading-none italic;
   }
   
   .crazy-card {
-    @apply rounded-[2.5rem] border-2 border-black bg-white p-6 transition-all active:scale-[0.98];
+    @apply rounded-[2.5rem] border border-white/10 bg-[#0a0a0a] p-6 transition-all active:scale-[0.98] shadow-2xl;
   }
 
   .crazy-button {
-    @apply flex h-16 w-full items-center justify-center rounded-2xl bg-black text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-stone-800 active:scale-95 disabled:opacity-20;
+    @apply flex h-16 w-full items-center justify-center rounded-2xl bg-white text-sm font-black uppercase tracking-widest text-black transition-all hover:bg-stone-200 active:scale-95 disabled:opacity-20 shadow-[0_0_30px_rgba(255,255,255,0.1)];
   }
 
   .crazy-input {
-    @apply h-14 w-full rounded-2xl border-2 border-black bg-white px-6 text-sm font-bold outline-none transition-all focus:bg-stone-50;
+    @apply h-14 w-full rounded-2xl border border-white/10 bg-[#111] px-6 text-sm font-bold text-white outline-none transition-all focus:bg-[#1a1a1a] focus:border-white/30;
+  }
+
+  .glow-text {
+    @apply [text-shadow:0_0_20px_rgba(255,255,255,0.3)];
   }
 }
 
-/* Animazioni */
 .animate-crazy-in {
-  animation: crazyIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: crazyIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes crazyIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  from { opacity: 0; transform: translateY(30px) scale(0.9); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { @apply bg-black; }
+::-webkit-scrollbar-thumb { @apply bg-stone-800 rounded-full; }

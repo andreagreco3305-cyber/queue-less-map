@@ -24,34 +24,35 @@ export function AppShell({
   const { itemCount } = useCart();
 
   return (
-    <div className="mx-auto min-h-[100dvh] max-w-md bg-white">
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stone-100 bg-white/80 px-4 py-4 backdrop-blur-xl pt-[max(1rem,env(safe-area-inset-top))]">
-        <div className="flex min-w-0 flex-1 items-center gap-3">
+    <div className="mx-auto min-h-[100dvh] max-w-md bg-black text-white selection:bg-white/20">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/5 bg-black/80 px-6 py-6 backdrop-blur-2xl pt-[max(1.5rem,env(safe-area-inset-top))]">
+        <div className="flex min-w-0 flex-1 items-center gap-4">
           {backHref ? (
             <Link
               href={backHref}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-black transition-all active:scale-90"
+              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-white transition-all active:scale-90"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-6 w-6" strokeWidth={3} />
             </Link>
           ) : (
-            <Logo href="/home" size="sm" markOnly />
+            <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+              <Logo href="/home" size="sm" markOnly />
+            </div>
           )}
           
-          <h1 className={`truncate font-black uppercase tracking-tighter text-black ${backHref ? 'text-lg' : 'text-xl'}`}>
-            {backHref ? title : <span>Queue<span className="text-stone-300 text-sm">Less</span></span>}
+          <h1 className={`truncate crazy-title ${backHref ? 'text-xl' : 'text-2xl'} glow-text`}>
+            {backHref ? title : <span>Queue<span className="text-white/20 ml-1">Less</span></span>}
           </h1>
         </div>
 
         {showCart && (
           <Link
             href="/cart"
-            className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-black shadow-lg shadow-black/10 transition-all active:scale-90"
-            aria-label={`Carrello, ${itemCount} articoli`}
+            className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all active:scale-90"
           >
-            <ShoppingBag className="h-5 w-5 text-white" />
+            <ShoppingBag className="h-6 w-6" strokeWidth={2.5} />
             {itemCount > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 border-white bg-black px-1 text-[10px] font-black text-white">
+              <span className="absolute -right-2 -top-2 flex h-7 min-w-[28px] items-center justify-center rounded-full border-4 border-black bg-black px-1.5 text-[11px] font-black text-white">
                 {itemCount}
               </span>
             )}
@@ -59,7 +60,7 @@ export function AppShell({
         )}
       </header>
       
-      <main className="pb-[max(5rem,env(safe-area-inset-bottom))]">{children}</main>
+      <main className="pb-[max(6rem,env(safe-area-inset-bottom))]">{children}</main>
       
       {showChat && <ChatAssistant />}
     </div>

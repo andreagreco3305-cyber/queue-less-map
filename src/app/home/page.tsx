@@ -6,55 +6,64 @@ import { BarCard } from "@/components/bars/BarCard";
 import { RequireAuth } from "@/components/auth/RequireAuth";
 import { useAuth } from "@/context/AuthContext";
 import { BARS } from "@/data/bars";
-import { LogOut, Sparkles, MapPin } from "lucide-react";
+import { Sparkles, MapPin, Search } from "lucide-react";
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const welcome = searchParams.get("welcome") === "1";
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <AppShell>
-      <div className="px-6 pt-6">
+      <div className="px-6 pt-10">
         {welcome && (
-          <div className="mb-6 flex items-start gap-3 rounded-[2rem] border border-black bg-black p-5 text-sm text-white shadow-2xl shadow-black/20 animate-in fade-in slide-in-from-top-4">
-            <Sparkles className="h-5 w-5 shrink-0 text-stone-400" />
+          <div className="mb-10 flex items-start gap-4 crazy-card !bg-white !text-black animate-crazy-in">
+            <Sparkles className="h-6 w-6 shrink-0 fill-black" />
             <div>
-              <p className="font-black uppercase tracking-tight">Accesso Completato</p>
-              <p className="mt-0.5 text-stone-400 font-medium tracking-tight leading-snug">Il tuo tempo è prezioso. Ordina ora e salta la fila.</p>
+              <p className="font-black uppercase tracking-tight italic">Missione Avviata</p>
+              <p className="mt-0.5 text-black/60 font-bold tracking-tight text-xs">Il predatore ha effettuato l&apos;accesso. Ordina e sbrana la coda.</p>
             </div>
           </div>
         )}
 
-        <div className="mb-8 flex items-end justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-stone-400">
+        {/* Search Bar Crazy */}
+        <div className="mb-12 relative group animate-crazy-in">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-white transition-colors" />
+          <input 
+            type="text" 
+            placeholder="Cerca il tuo bersaglio..." 
+            className="w-full h-16 bg-white/5 border border-white/10 rounded-[1.5rem] pl-14 pr-6 text-sm font-bold outline-none focus:bg-white/10 focus:border-white/30 transition-all"
+          />
+        </div>
+
+        <div className="mb-10 flex items-end justify-between animate-crazy-in">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-white/20 italic">
               <MapPin className="h-3 w-3" strokeWidth={3} />
-              Milano, IT
+              Zona: Milano Centro
             </div>
-            <h1 className="text-4xl font-black leading-none tracking-tighter text-black uppercase">
+            <h1 className="text-[52px] crazy-title text-white glow-text leading-[0.85]">
               SCELTI<br />PER TE
             </h1>
           </div>
-          
-          <button
-            type="button"
-            onClick={() => logout().then(() => (window.location.href = "/"))}
-            className="flex h-10 items-center gap-2 rounded-full border border-stone-100 px-4 text-[11px] font-black uppercase tracking-widest text-black transition-all hover:bg-stone-50 active:scale-95"
-          >
-            Esci
-          </button>
         </div>
 
-        <div className="space-y-6 pb-12">
+        <div className="space-y-10 pb-20 animate-crazy-in">
           {BARS.map((bar) => (
             <BarCard key={bar.id} bar={bar} />
           ))}
         </div>
 
-        <footer className="pb-8 pt-4 text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-stone-200">
-            Powered by QueueLess Engine
+        <footer className="pb-12 pt-4 text-center">
+          <button
+            type="button"
+            onClick={() => logout().then(() => (window.location.href = "/"))}
+            className="mb-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+          >
+            [ DISCONNESSIONE PREDATORE ]
+          </button>
+          <p className="text-[8px] font-black uppercase tracking-[0.5em] text-white/5">
+            QLX ULTRA ENGINE v2.0
           </p>
         </footer>
       </div>
