@@ -44,6 +44,7 @@ export function SignUpPanel({
       )}
 
       <form onSubmit={handleSubmit} className="space-y-3">
+        {/* ... existing inputs ... */}
         <div className="group relative">
           <Mail className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-black" />
           <input
@@ -82,6 +83,23 @@ export function SignUpPanel({
           )}
         </button>
       </form>
+
+      <div className="relative py-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-stone-100"></div>
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-2 text-stone-400 font-bold">Oppure</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => onSignIn("demo@queueless.it", "demo123456")}
+        className="flex h-14 w-full items-center justify-center rounded-2xl border-2 border-stone-900 bg-white text-base font-bold text-black transition-all active:scale-[0.98] hover:bg-stone-50"
+      >
+        Esplora Demo
+      </button>
 
       <div className="text-center">
         <button
