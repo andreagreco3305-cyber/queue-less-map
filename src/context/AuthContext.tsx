@@ -58,7 +58,7 @@ function getSupabaseClient() {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [status, setStatus] = useState<AuthStatus>("loading");
+  const [status, setStatus] = useState<AuthStatus>("guest"); // Inizia come guest per velocità
   const [configError, setConfigError] = useState<string | null>(null);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
@@ -90,6 +90,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     refresh();
 
+    // Safety timeout: se dopo 5 secondi siamo ancora in loading, forziamo guest
+    const timer = setTimeout(() => {
+      setStatus(prev => prev === "loading" ? "guest" : prev);
+    }, 5000);
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
@@ -97,7 +102,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStatus(deriveStatus(nextSession));
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timer);
+    };
   }, [supabase, refresh]);
 
   const logout = useCallback(async () => {
