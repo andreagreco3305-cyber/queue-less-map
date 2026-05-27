@@ -27,6 +27,7 @@ type AuthContextValue = {
   logout: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<{ error?: string }>;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  signInAsDemo: () => void;
   resendConfirmation: (email: string) => Promise<{ error?: string }>;
 };
 
@@ -145,6 +146,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [supabase],
   );
 
+  const signInAsDemo = useCallback(() => {
+    const demoUser: AuthUser = {
+      id: "demo-id",
+      email: "demo@queueless.it",
+      emailConfirmed: true,
+    };
+    // Mock session object
+    const demoSession = {
+      access_token: "demo-token",
+      refresh_token: "demo-refresh",
+      expires_in: 3600,
+      token_type: "bearer",
+      user: { id: "demo-id", email: "demo@queueless.it", email_confirmed_at: new Date().toISOString() } as any,
+    };
+    setSession(demoSession);
+    setStatus("authenticated");
+  }, []);
+
   const resendConfirmation = useCallback(
     async (email: string) => {
       if (!supabase) return { error: configError ?? "Supabase non configurato." };
@@ -172,9 +191,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logout,
       signUp,
       signIn,
+      signInAsDemo,
       resendConfirmation,
     }),
-    [user, status, session, refresh, logout, signUp, signIn, resendConfirmation],
+    [user, status, session, refresh, logout, signUp, signIn, signInAsDemo, resendConfirmation],
   );
 
   return (

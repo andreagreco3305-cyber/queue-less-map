@@ -2,6 +2,7 @@
 
 import { ArrowRight, Mail, Loader2, Lock } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 type AuthMode = "signup" | "login";
 
@@ -16,6 +17,7 @@ export function SignUpPanel({
   onSignIn,
   errorMessage,
 }: SignUpPanelProps) {
+  const { signInAsDemo } = useAuth();
   const [mode, setMode] = useState<AuthMode>("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -95,7 +97,7 @@ export function SignUpPanel({
 
       <button
         type="button"
-        onClick={() => onSignIn("demo@queueless.it", "demo123456")}
+        onClick={signInAsDemo}
         className="flex h-14 w-full items-center justify-center rounded-2xl border-2 border-stone-900 bg-white text-base font-bold text-black transition-all active:scale-[0.98] hover:bg-stone-50"
       >
         Esplora Demo
