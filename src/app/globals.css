@@ -3,58 +3,55 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --stone-50: #0a0a0a;
-  --stone-100: #111111;
-  --stone-200: #1c1c1c;
-  --stone-300: #262626;
-  --stone-400: #404040;
-  --stone-500: #737373;
-  --stone-600: #a3a3a3;
-  --stone-700: #d4d4d4;
-  --stone-800: #e5e5e5;
-  --stone-900: #f5f5f5;
+  --background: #ffffff;
+  --foreground: #000000;
+  --accent: #6366f1;
+  --stone-50: #fafafa;
+  --stone-100: #f5f5f7; /* Apple Grey */
+  --stone-200: #e8e8ed;
+  --stone-300: #d2d2d7;
+  --stone-400: #86868b;
+  --stone-500: #6e6e73;
+  --stone-600: #424245;
+  --stone-700: #333336;
+  --stone-800: #1d1d1f;
+  --stone-900: #000000;
 }
 
 @layer base {
   body {
-    @apply bg-black text-white antialiased;
+    @apply bg-white text-black antialiased selection:bg-black selection:text-white;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
 }
 
 @layer components {
   .crazy-title {
-    @apply font-black uppercase tracking-tighter leading-none italic;
+    @apply font-black uppercase tracking-tighter leading-[0.9] italic;
   }
   
   .crazy-card {
-    @apply rounded-[2.5rem] border border-white/10 bg-[#0a0a0a] p-6 transition-all active:scale-[0.98] shadow-2xl;
+    @apply rounded-[2.5rem] bg-white border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all active:scale-[0.98];
   }
 
   .crazy-button {
-    @apply flex h-16 w-full items-center justify-center rounded-2xl bg-white text-sm font-black uppercase tracking-widest text-black transition-all hover:bg-stone-200 active:scale-95 disabled:opacity-20 shadow-[0_0_30px_rgba(255,255,255,0.1)];
+    @apply flex h-16 w-full items-center justify-center rounded-2xl bg-black text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-stone-800 active:scale-95 disabled:opacity-20 shadow-xl shadow-black/10;
   }
 
   .crazy-input {
-    @apply h-14 w-full rounded-2xl border border-white/10 bg-[#111] px-6 text-sm font-bold text-white outline-none transition-all focus:bg-[#1a1a1a] focus:border-white/30;
-  }
-
-  .glow-text {
-    @apply [text-shadow:0_0_20px_rgba(255,255,255,0.3)];
+    @apply h-14 w-full rounded-2xl border border-stone-200 bg-stone-50 px-6 text-sm font-bold text-black outline-none transition-all focus:bg-white focus:border-black focus:ring-4 focus:ring-black/5;
   }
 }
 
 .animate-crazy-in {
-  animation: crazyIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: crazyIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes crazyIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.9); }
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { @apply bg-black; }
-::-webkit-scrollbar-thumb { @apply bg-stone-800 rounded-full; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { @apply bg-white; }
+::-webkit-scrollbar-thumb { @apply bg-stone-200 rounded-full; }

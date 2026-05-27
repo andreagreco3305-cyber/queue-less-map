@@ -40,26 +40,25 @@ export function SignUpPanel({
   return (
     <div className="w-full space-y-6">
       {errorMessage && (
-        <p className="rounded-2xl bg-red-50 p-4 text-center text-sm font-medium text-red-600">
+        <div className="rounded-[1.5rem] bg-red-50 p-5 text-center text-xs font-black uppercase tracking-tight text-red-600 border border-red-100">
           {errorMessage}
-        </p>
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        {/* ... existing inputs ... */}
-        <div className="group relative">
-          <Mail className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-black" />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="relative">
+          <Mail className="pointer-events-none absolute left-6 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-300" />
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="input-field pl-12"
+            className="crazy-input pl-14"
           />
         </div>
-        <div className="group relative">
-          <Lock className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-black" />
+        <div className="relative">
+          <Lock className="pointer-events-none absolute left-6 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-300" />
           <input
             type="password"
             placeholder="Password"
@@ -67,21 +66,21 @@ export function SignUpPanel({
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
-            className="input-field pl-12"
+            className="crazy-input pl-14"
           />
         </div>
         <button
           type="submit"
           disabled={isSubmitting || !email.trim() || password.length < 6}
-          className="btn-primary mt-4"
+          className="crazy-button"
         >
           {isSubmitting ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
+            <Loader2 className="h-6 w-6 animate-spin" />
           ) : (
-            <span className="flex items-center gap-2">
-              {mode === "signup" ? "Inizia ora" : "Accedi"}
-              <ArrowRight className="h-5 w-5" />
-            </span>
+            <div className="flex w-full items-center justify-between px-6">
+              <span>{mode === "signup" ? "REGISTRATI" : "ACCEDI"}</span>
+              <ArrowRight className="h-6 w-6 stroke-[3]" />
+            </div>
           )}
         </button>
       </form>
@@ -90,28 +89,36 @@ export function SignUpPanel({
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-stone-100"></div>
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-2 text-stone-400 font-bold">Oppure</span>
+        <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.3em]">
+          <span className="bg-white px-4 text-stone-300">Fast Pass</span>
         </div>
       </div>
 
       <button
         type="button"
-        onClick={signInAsDemo}
-        className="flex h-14 w-full items-center justify-center rounded-2xl border-2 border-stone-900 bg-white text-base font-bold text-black transition-all active:scale-[0.98] hover:bg-stone-50"
+        onClick={() => {
+          setIsSubmitting(true);
+          setTimeout(() => {
+            signInAsDemo();
+          }, 400);
+        }}
+        className="flex h-20 w-full items-center justify-between rounded-[1.5rem] bg-stone-50 border-2 border-transparent px-8 transition-all active:scale-[0.98] hover:bg-stone-100"
       >
-        Esplora Demo
+        <span className="text-sm font-black uppercase tracking-widest text-black">ESPLORA DEMO</span>
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white shadow-lg">
+          <ArrowRight className="h-5 w-5 stroke-[3]" />
+        </div>
       </button>
 
       <div className="text-center">
         <button
           type="button"
           onClick={() => setMode(mode === "signup" ? "login" : "signup")}
-          className="text-sm font-semibold text-stone-900 transition-opacity hover:opacity-70"
+          className="text-[10px] font-black uppercase tracking-widest text-stone-400 hover:text-black transition-colors"
         >
           {mode === "signup"
-            ? "Hai già un account? Accedi"
-            : "Non hai un account? Registrati"}
+            ? "[ HAI GIÀ UN ACCOUNT? ACCEDI ]"
+            : "[ NUOVO UTENTE? REGISTRATI ]"}
         </button>
       </div>
     </div>

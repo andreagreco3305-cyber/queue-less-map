@@ -58,11 +58,13 @@ function getSupabaseClient() {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [status, setStatus] = useState<AuthStatus>("guest"); // Inizia come guest per velocità
+  const [status, setStatus] = useState<AuthStatus>("loading");
+  const [isDemo, setIsDemo] = useState(false);
   const [configError, setConfigError] = useState<string | null>(null);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
   const refresh = useCallback(async () => {
+    if (isDemo) return; // Non sovrascrivere se siamo in modalità demo
     if (!supabase) {
       setConfigError(
         "Configura .env.local: URL + PUBLISHABLE_KEY (o ANON_KEY).",
@@ -78,9 +80,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setSession(data.session);
     setStatus(deriveStatus(data.session));
-  }, [supabase]);
+  }, [supabase, isDemo]);
 
   useEffect(() => {
+    if (isDemo) return; // Ignora supabase in demo
     if (!supabase) {
       setConfigError(
         "Configura .env.local: URL + PUBLISHABLE_KEY (o ANON_KEY).",
@@ -90,25 +93,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     refresh();
 
-    // Safety timeout: se dopo 5 secondi siamo ancora in loading, forziamo guest
-    const timer = setTimeout(() => {
-      setStatus(prev => prev === "loading" ? "guest" : prev);
-    }, 5000);
-
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (isDemo) return;
       setSession(nextSession);
       setStatus(deriveStatus(nextSession));
     });
 
     return () => {
       subscription.unsubscribe();
-      clearTimeout(timer);
     };
-  }, [supabase, refresh]);
+  }, [supabase, refresh, isDemo]);
 
   const logout = useCallback(async () => {
+    setIsDemo(false);
     if (!supabase) return;
     await supabase.auth.signOut();
     setSession(null);
@@ -117,6 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = useCallback(
     async (email: string, password: string) => {
+      setIsDemo(false);
       if (!supabase) return { error: configError ?? "Supabase non configurato." };
       const origin =
         process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin;
@@ -135,6 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = useCallback(
     async (email: string, password: string) => {
+      setIsDemo(false);
       if (!supabase) return { error: configError ?? "Supabase non configurato." };
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -155,6 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const signInAsDemo = useCallback(() => {
+    setIsDemo(true);
     const demoUser: AuthUser = {
       id: "demo-id",
       email: "demo@queueless.it",

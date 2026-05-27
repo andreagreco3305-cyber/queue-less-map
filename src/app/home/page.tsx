@@ -17,53 +17,53 @@ function HomeContent() {
     <AppShell>
       <div className="px-6 pt-10">
         {welcome && (
-          <div className="mb-10 flex items-start gap-4 crazy-card !bg-white !text-black animate-crazy-in">
-            <Sparkles className="h-6 w-6 shrink-0 fill-black" />
+          <div className="mb-12 flex items-start gap-5 crazy-card !bg-black !text-white animate-crazy-in border-none p-8">
+            <Sparkles className="h-8 w-8 shrink-0 fill-white" />
             <div>
-              <p className="font-black uppercase tracking-tight italic">Missione Avviata</p>
-              <p className="mt-0.5 text-black/60 font-bold tracking-tight text-xs">Il predatore ha effettuato l&apos;accesso. Ordina e sbrana la coda.</p>
+              <p className="font-black uppercase tracking-widest text-lg italic italic">Bentornato</p>
+              <p className="mt-1 text-stone-400 font-bold tracking-tight text-sm leading-snug">Il predatore è pronto. Sbrana la coda oggi stesso.</p>
             </div>
           </div>
         )}
 
-        {/* Search Bar Crazy */}
-        <div className="mb-12 relative group animate-crazy-in">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-white transition-colors" />
+        {/* Search Bar Premium */}
+        <div className="mb-14 relative group animate-crazy-in">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-stone-300 group-focus-within:text-black transition-colors" />
           <input 
             type="text" 
-            placeholder="Cerca il tuo bersaglio..." 
-            className="w-full h-16 bg-white/5 border border-white/10 rounded-[1.5rem] pl-14 pr-6 text-sm font-bold outline-none focus:bg-white/10 focus:border-white/30 transition-all"
+            placeholder="Cerca il tuo locale..." 
+            className="w-full h-18 bg-stone-50 border-2 border-transparent rounded-[1.8rem] pl-16 pr-8 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all shadow-sm"
           />
         </div>
 
         <div className="mb-10 flex items-end justify-between animate-crazy-in">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-white/20 italic">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-stone-400">
               <MapPin className="h-3 w-3" strokeWidth={3} />
-              Zona: Milano Centro
+              MILANO IT
             </div>
-            <h1 className="text-[52px] crazy-title text-white glow-text leading-[0.85]">
-              SCELTI<br />PER TE
+            <h1 className="text-[52px] crazy-title text-black leading-none">
+              SCELTI<br /><span className="text-stone-200">PER TE</span>
             </h1>
           </div>
         </div>
 
-        <div className="space-y-10 pb-20 animate-crazy-in">
+        <div className="space-y-12 pb-24 animate-crazy-in">
           {BARS.map((bar) => (
             <BarCard key={bar.id} bar={bar} />
           ))}
         </div>
 
-        <footer className="pb-12 pt-4 text-center">
+        <footer className="pb-16 pt-4 text-center border-t border-stone-50">
           <button
             type="button"
             onClick={() => logout().then(() => (window.location.href = "/"))}
-            className="mb-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+            className="mb-8 text-[10px] font-black uppercase tracking-[0.3em] text-stone-300 hover:text-black transition-colors"
           >
-            [ DISCONNESSIONE PREDATORE ]
+            [ LOGOUT SYSTEM ]
           </button>
-          <p className="text-[8px] font-black uppercase tracking-[0.5em] text-white/5">
-            QLX ULTRA ENGINE v2.0
+          <p className="text-[9px] font-black uppercase tracking-[0.5em] text-stone-100">
+            ELITE PERFORMANCE ENGINE
           </p>
         </footer>
       </div>

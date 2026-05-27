@@ -55,23 +55,22 @@ export function ChatAssistant() {
         className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-2xl bg-black text-white shadow-2xl transition-all hover:scale-105 active:scale-95"
       >
         <MessageCircle className="h-8 w-8" />
-        <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-black border-2 border-white animate-pulse" />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-md sm:items-center sm:p-6 animate-in fade-in duration-300">
-          <div className="flex h-[min(85dvh,750px)] w-full max-w-md flex-col overflow-hidden rounded-t-[3rem] bg-white shadow-2xl sm:rounded-[3rem] border-x-4 border-t-4 border-black">
-            <header className="flex items-center justify-between border-b-4 border-black bg-white px-8 py-6">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm sm:items-center sm:p-6 animate-in fade-in duration-300">
+          <div className="flex h-[min(85dvh,750px)] w-full max-w-md flex-col overflow-hidden rounded-t-[3rem] bg-white shadow-2xl sm:rounded-[3rem] border border-stone-100">
+            <header className="flex items-center justify-between border-b border-stone-50 bg-white px-8 py-6">
               <div className="flex items-center gap-4">
                 <Logo href={undefined} size="sm" markOnly />
-                <h2 className="crazy-title text-xl">Predatore AI</h2>
+                <h2 className="crazy-title text-black text-xl tracking-tighter">Predatore AI</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-100 text-black transition-all hover:bg-stone-200 active:scale-90"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-50 text-black transition-all hover:bg-stone-100 active:scale-90"
               >
-                <X className="h-6 w-6" strokeWidth={3} />
+                <X className="h-6 w-6" strokeWidth={2.5} />
               </button>
             </header>
 
@@ -80,11 +79,11 @@ export function ChatAssistant() {
               className="flex-1 space-y-8 overflow-y-auto px-8 py-8 bg-white"
             >
               {messages.length === 0 && (
-                <div className="crazy-card border-stone-100 !bg-stone-50 !shadow-none">
-                  <h3 className="crazy-title text-2xl mb-2">Pausa?</h3>
-                  <p className="text-sm font-bold text-stone-500 uppercase tracking-tight">
-                    Dì pure: <br />
-                    <span className="text-black">&quot;Un cappuccino al Bar Centrale alle 08:30&quot;</span>
+                <div className="rounded-[2rem] bg-stone-50 p-8">
+                  <h3 className="crazy-title text-3xl mb-3 text-black">Ciao.</h3>
+                  <p className="text-sm font-bold text-stone-400 uppercase tracking-widest leading-relaxed">
+                    Sbraniamo la fila? <br />
+                    Dì: <span className="text-black italic">&quot;Un espresso al Bar Centrale tra 5 min&quot;</span>
                   </p>
                 </div>
               )}
@@ -102,16 +101,16 @@ export function ChatAssistant() {
                 return (
                   <div
                     key={m.id}
-                    className={`flex flex-col gap-3 ${
+                    className={`flex flex-col gap-2 ${
                       isUser ? "items-end" : "items-start"
                     }`}
                   >
                     {m.content ? (
                       <div
-                        className={`max-w-[85%] rounded-[1.5rem] px-6 py-4 text-sm font-black leading-snug shadow-sm ${
+                        className={`max-w-[85%] rounded-[1.5rem] px-6 py-4 text-sm font-bold leading-relaxed shadow-sm transition-all ${
                           isUser
-                            ? "bg-black text-white rounded-tr-none"
-                            : "bg-stone-100 text-black rounded-tl-none border-2 border-transparent"
+                            ? "bg-black text-white rounded-tr-none shadow-xl shadow-black/10"
+                            : "bg-stone-50 text-black rounded-tl-none border border-stone-100"
                         }`}
                       >
                         {m.content}
@@ -119,7 +118,7 @@ export function ChatAssistant() {
                     ) : null}
 
                     {errors.map((err, i) => (
-                      <div key={i} className="rounded-xl bg-red-100 p-4 text-[10px] font-black uppercase text-red-600 border-2 border-red-200">
+                      <div key={i} className="rounded-xl bg-red-50 p-4 text-[10px] font-black uppercase text-red-600 border border-red-100">
                         {err}
                       </div>
                     ))}
@@ -134,28 +133,29 @@ export function ChatAssistant() {
               })}
 
               {isLoading && (
-                <div className="crazy-title text-[10px] text-stone-300 animate-pulse tracking-[0.3em]">
-                  Scansione territorio...
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-stone-300">
+                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-stone-200" />
+                  Thinking
                 </div>
               )}
 
               {error && (
-                <div className="rounded-2xl border-4 border-red-500 bg-white p-6 text-xs font-black uppercase text-red-500">
-                  FALLIMENTO: {error.message}
+                <div className="rounded-2xl border border-red-100 bg-red-50 p-6 text-[10px] font-black uppercase text-red-700">
+                  ERROR: {error.message}
                 </div>
               )}
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="border-t-4 border-black bg-white p-8"
+              className="border-t border-stone-50 bg-white p-8"
             >
               <div className="relative flex items-center">
                 <input
                   value={input}
                   onChange={handleInputChange}
-                  placeholder="Ordina ora..."
-                  className="crazy-input pr-16"
+                  placeholder="Ordina con un messaggio..."
+                  className="crazy-input pr-16 bg-stone-50 border-none h-16 rounded-[1.5rem]"
                   disabled={isLoading}
                 />
                 <button
