@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user?.email_confirmed_at) {
+    if (!user) {
       return new Response(
         JSON.stringify({
           error: "Devi essere autenticato per usare l'assistente.",
