@@ -9,11 +9,11 @@ type LogoProps = {
   showText?: boolean;
 };
 
-const IMG_SIZES = {
-  sm: 32,
-  md: 40,
-  lg: 56,
-  xl: 88,
+const SIZES = {
+  sm: 24,
+  md: 32,
+  lg: 48,
+  xl: 64,
 };
 
 export function Logo({
@@ -22,36 +22,39 @@ export function Logo({
   size = "md",
   showText = true,
 }: LogoProps) {
-  const px = IMG_SIZES[size];
+  const px = SIZES[size];
   const withText = !markOnly && showText;
 
   const content = (
-    <span className={`inline-flex items-center ${withText ? "gap-2.5" : ""}`}>
-      {/* Custom SVG Logo: A lightning bolt combined with a circular queue path */}
+    <span className={`inline-flex items-center ${withText ? "gap-3" : ""}`}>
+      {/* Nuovo Logo: Ultra Minimalist QL Symbol */}
       <svg
         width={px}
         height={px}
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="text-indigo-600"
+        className="text-black"
       >
-        <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" strokeDasharray="210 70" strokeLinecap="round" className="opacity-20" />
+        <rect width="100" height="100" rx="24" fill="currentColor" />
         <path
-          d="M45 20L30 55H50L40 85L75 40H55L65 10"
-          fill="currentColor"
-          className="drop-shadow-[0_0_8px_rgba(79,70,229,0.5)]"
+          d="M30 40C30 34.4772 34.4772 30 40 30H70V45C70 50.5228 65.5228 55 60 55H30V40Z"
+          fill="white"
         />
-        <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" strokeDasharray="150 130" strokeLinecap="round" />
+        <path
+          d="M30 70V55H60V70H30Z"
+          fill="white"
+          fillOpacity="0.3"
+        />
       </svg>
 
       {withText && (
         <span
-          className={`font-black tracking-tighter text-stone-900 uppercase ${
-            size === "xl" ? "text-3xl" : size === "lg" ? "text-2xl" : "text-lg"
+          className={`font-black tracking-tighter text-black uppercase ${
+            size === "xl" ? "text-3xl" : size === "lg" ? "text-2xl" : "text-xl"
           }`}
         >
-          Queue<span className="text-indigo-600">Less</span>
+          Queue<span className="text-stone-400">Less</span>
         </span>
       )}
     </span>
@@ -59,7 +62,7 @@ export function Logo({
 
   if (href) {
     return (
-      <Link href={href} className="transition opacity-95 hover:opacity-100">
+      <Link href={href} className="transition-opacity hover:opacity-80 active:scale-95">
         {content}
       </Link>
     );

@@ -13,19 +13,6 @@ export function OnboardingCarousel({ onReachLastSlide }: OnboardingCarouselProps
   const scrollRef = useRef<HTMLDivElement>(null);
   const slideCount = ONBOARDING_SLIDES.length;
 
-  const goTo = useCallback(
-    (index: number) => {
-      const next = Math.max(0, Math.min(index, slideCount - 1));
-      setActiveIndex(next);
-      const el = scrollRef.current;
-      if (el) {
-        el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
-      }
-      if (next === slideCount - 1) onReachLastSlide?.();
-    },
-    [slideCount, onReachLastSlide],
-  );
-
   const onScroll = () => {
     const el = scrollRef.current;
     if (!el || el.clientWidth === 0) return;
@@ -37,7 +24,7 @@ export function OnboardingCarousel({ onReachLastSlide }: OnboardingCarouselProps
   };
 
   return (
-    <section className="flex flex-1 flex-col" aria-label="Presentazione Queue Less">
+    <section className="flex flex-1 flex-col overflow-hidden">
       <div
         ref={scrollRef}
         onScroll={onScroll}
@@ -45,30 +32,19 @@ export function OnboardingCarousel({ onReachLastSlide }: OnboardingCarouselProps
       >
         {ONBOARDING_SLIDES.map((slide, index) => {
           const Icon = slide.icon;
-          const isActive = index === activeIndex;
-
           return (
             <article
               key={slide.id}
-              className="flex min-w-full snap-center flex-col items-center justify-center px-8 pb-4 pt-6"
-              aria-hidden={!isActive}
+              className="flex min-w-full snap-center flex-col items-start justify-center px-10"
             >
-              <div
-                className={`mb-10 flex h-28 w-28 items-center justify-center rounded-3xl bg-indigo-50 shadow-sm ring-1 ring-indigo-100 transition-opacity duration-200 ${
-                  isActive ? "opacity-100" : "opacity-50"
-                }`}
-              >
-                <Icon
-                  className="h-14 w-14 text-indigo-600"
-                  strokeWidth={1.5}
-                  aria-hidden
-                />
+              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-stone-100">
+                <Icon className="h-8 w-8 text-black" strokeWidth={1.5} />
               </div>
 
-              <h1 className="max-w-xs text-center text-3xl font-bold leading-tight tracking-tight text-stone-900">
+              <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-black">
                 {slide.title}
               </h1>
-              <p className="mt-3 max-w-[280px] text-center text-base leading-relaxed text-stone-500">
+              <p className="mt-4 text-lg leading-relaxed text-stone-500">
                 {slide.subtitle}
               </p>
             </article>
@@ -76,11 +52,14 @@ export function OnboardingCarousel({ onReachLastSlide }: OnboardingCarouselProps
         })}
       </div>
 
-      <div className="px-8 pb-2">
+      <div className="px-10 pb-8">
         <SlideIndicators
           count={slideCount}
           activeIndex={activeIndex}
-          onSelect={goTo}
+          onSelect={(index) => {
+            const el = scrollRef.current;
+            if (el) el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+          }}
         />
       </div>
     </section>
