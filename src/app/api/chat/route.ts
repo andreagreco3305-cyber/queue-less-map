@@ -45,7 +45,8 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
   } catch (e) {
     console.error("[chat]", e);
-    return new Response(JSON.stringify({ error: "Errore dell'assistente OpenRouter. Riprova." }), {
+    const errorMessage = e instanceof Error ? e.message : "Errore sconosciuto";
+    return new Response(JSON.stringify({ error: `Dettaglio errore: ${errorMessage}` }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
