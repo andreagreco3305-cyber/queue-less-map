@@ -6,21 +6,18 @@ import { Check, Loader2, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 export function OrderReviewCard({ draft }: { draft: OrderDraft }) {
-  const { addLine } = useCart();
+  const { addItem } = useCart();
   const [status, setStatus] = useState<"idle" | "adding" | "success">("idle");
 
   const onConfirm = async () => {
     setStatus("adding");
     // Simula aggiunta a carrello
     setTimeout(() => {
-      addLine({
+      addItem(draft.barId, draft.barName, {
         id: draft.itemId,
         name: draft.itemName,
         price: draft.price,
-        barId: draft.barId,
-        barName: draft.barName,
-        pickupTime: draft.time,
-        category: "caffè",
+        category: "caffè", // Default category for draft
       });
       setStatus("success");
     }, 800);

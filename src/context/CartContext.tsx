@@ -180,7 +180,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setLines((prev) =>
       prev.map((l) => (l.itemId === itemId ? { ...l, quantity } : l)),
     );
-  }, []);
+  }, [removeLine]);
 
   const setPickup = useCallback((next: PickupSelection | null) => {
     setPickupState(next);
