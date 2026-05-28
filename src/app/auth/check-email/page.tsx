@@ -1,26 +1,35 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Mail, ArrowLeft, ArrowRight } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function CheckEmailPage() {
+function CheckEmailContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "tua email";
 
+  return (
+    <div className="text-center space-y-4">
+      <h1 className="crazy-title text-4xl leading-none">Controlla<br />la posta</h1>
+      <p className="text-sm font-bold text-stone-400 uppercase tracking-tight leading-relaxed">
+        Abbiamo inviato un link di conferma a <br />
+        <span className="text-black">{email}</span>
+      </p>
+    </div>
+  );
+}
+
+export default function CheckEmailPage() {
   return (
     <main className="mx-auto flex min-h-[100dvh] max-w-md flex-col bg-white text-black p-10 justify-center">
       <div className="mx-auto mb-10 flex h-24 w-24 items-center justify-center rounded-[2.5rem] bg-stone-50 border-2 border-black shadow-xl">
         <Mail className="h-10 w-10 text-black" strokeWidth={2.5} />
       </div>
 
-      <div className="text-center space-y-4">
-        <h1 className="crazy-title text-4xl leading-none">Controlla<br />la posta</h1>
-        <p className="text-sm font-bold text-stone-400 uppercase tracking-tight leading-relaxed">
-          Abbiamo inviato un link di conferma a <br />
-          <span className="text-black">{email}</span>
-        </p>
-      </div>
+      <Suspense fallback={<div className="h-20 animate-pulse bg-stone-50 rounded-2xl" />}>
+        <CheckEmailContent />
+      </Suspense>
 
       <div className="mt-12 space-y-4">
         <Link

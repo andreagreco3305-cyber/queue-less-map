@@ -7,6 +7,7 @@ import { RequireAuth } from "@/components/auth/RequireAuth";
 import { useAuth } from "@/context/AuthContext";
 import { BARS } from "@/data/bars";
 import { Sparkles, MapPin, Search } from "lucide-react";
+import { Suspense } from "react";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -74,7 +75,9 @@ function HomeContent() {
 export default function HomePage() {
   return (
     <RequireAuth>
-      <HomeContent />
+      <Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <HomeContent />
+      </Suspense>
     </RequireAuth>
   );
 }
