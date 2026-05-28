@@ -25,8 +25,12 @@ export async function POST(req: Request) {
     });
 
     return result.toDataStreamResponse();
-  } catch (e) {
+  } catch (e: any) {
     console.error("[chat-api-error]", e);
-    return new Response(JSON.stringify({ error: "Server Error", details: String(e) }), { status: 500 });
+    const detail = e.message || String(e);
+    return new Response(JSON.stringify({ error: "AI Service Error", details: detail }), { 
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
