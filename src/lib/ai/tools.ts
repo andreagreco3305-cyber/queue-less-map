@@ -17,7 +17,11 @@ export const preparaOrdineTool = tool({
   execute: async ({ barName, item, time }) => {
     const result = resolveOrderDraft(barName, item, time);
     if ("error" in result) {
-      return { success: false as const, error: result.error };
+      return { 
+        success: false as const, 
+        error: result.error,
+        suggestions: "suggestions" in result ? result.suggestions : undefined
+      };
     }
     return {
       success: true as const,

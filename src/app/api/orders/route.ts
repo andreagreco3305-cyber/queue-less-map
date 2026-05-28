@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const pickupCode = `QL-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    const pickupCode = Math.random().toString(36).slice(2, 5).toUpperCase();
 
     const { data, error } = await supabase
       .from("orders")

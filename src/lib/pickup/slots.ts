@@ -38,6 +38,29 @@ function formatSlotLabel(date: Date): { label: string; shortLabel: string } {
   };
 }
 
+export function generateSlots(): PickupSlot[] {
+  const slots: PickupSlot[] = [];
+  const now = new Date();
+  
+  // Arrotonda al prossimo slot di 15 minuti + un piccolo buffer di 10 min
+  const start = roundToSlot(new Date(now.getTime() + 10 * 60 * 1000));
+  
+  for (let i = 0; i < 8; i++) {
+    const d = new Date(start.getTime() + i * 15 * 60 * 1000);
+    const { label, shortLabel } = formatSlotLabel(d);
+    
+    slots.push({
+      iso: d.toISOString(),
+      label,
+      shortLabel,
+      spotsLeft: 5,
+      available: true,
+    });
+  }
+  
+  return slots;
+}
+
 export function generatePickupSlots(
   barId: string,
   getBookings: (barId: string, iso: string) => number,

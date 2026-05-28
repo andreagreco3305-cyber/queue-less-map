@@ -63,7 +63,7 @@ export function ChatAssistant() {
             <header className="flex items-center justify-between border-b border-stone-50 bg-white px-8 py-6">
               <div className="flex items-center gap-4">
                 <Logo href={undefined} size="sm" markOnly />
-                <h2 className="crazy-title text-black text-xl tracking-tighter">Predatore AI</h2>
+                <h2 className="crazy-title text-black text-xl tracking-tighter">Queue Less AI</h2>
               </div>
               <button
                 type="button"
@@ -82,7 +82,7 @@ export function ChatAssistant() {
                 <div className="rounded-[2rem] bg-stone-50 p-8">
                   <h3 className="crazy-title text-3xl mb-3 text-black">Ciao.</h3>
                   <p className="text-sm font-bold text-stone-400 uppercase tracking-widest leading-relaxed">
-                    Sbraniamo la fila? <br />
+                    Siamo qui per aiutarti. <br />
                     Dì: <span className="text-black italic">&quot;Un espresso al Bar Centrale tra 5 min&quot;</span>
                   </p>
                 </div>

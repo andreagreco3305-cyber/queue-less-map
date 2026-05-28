@@ -15,7 +15,7 @@ export default function CheckoutPage() {
   const handlePay = () => {
     setStatus("processing");
     setTimeout(() => {
-      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const code = Math.random().toString(36).slice(2, 5).toUpperCase();
       setOrderCode(code);
       setStatus("success");
       clearCart();
@@ -33,8 +33,8 @@ export default function CheckoutPage() {
             </div>
           </div>
           
-          <h2 className="crazy-title text-4xl mb-4 leading-none">MISSIONE<br />COMPIUTA</h2>
-          <p className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-12 italic">Il predatore ha colpito ancora. <br />Ritira il tuo ordine al bancone.</p>
+          <h2 className="crazy-title text-4xl mb-4 leading-none">ORDINE<br />INVIATO</h2>
+          <p className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-12 italic">Il tuo ordine è stato ricevuto. <br />Mostra il codice al bancone.</p>
           
           <div className="crazy-card !bg-stone-50 border-none w-full !p-8 mb-12">
             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-300 mb-2">Codice di Ritiro</p>
@@ -43,7 +43,7 @@ export default function CheckoutPage() {
 
           <Link href="/home" className="crazy-button">
             <div className="flex w-full items-center justify-between px-6">
-                <span>NUOVA CACCIA</span>
+                <span>NUOVO ORDINE</span>
                 <ArrowRight className="h-6 w-6 stroke-[3]" />
             </div>
           </Link>

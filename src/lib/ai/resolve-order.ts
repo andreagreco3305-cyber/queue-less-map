@@ -76,12 +76,24 @@ function formatPickupLabel(time: string): string {
 
 function timeToIsoToday(time: string): string {
   const match = time.match(/^(\d{1,2}):(\d{2})$/);
-  const d = new Date();
+  let d = new Date();
   if (match) {
     d.setHours(parseInt(match[1], 10), parseInt(match[2], 10), 0, 0);
   } else {
-    d.setMinutes(d.getMinutes() + 30);
+    d.setMinutes(d.getMinutes() + 20); // Fallback se manca orario
   }
+  
+  // Arrotonda ai 15 min più vicini (es. 09:01 -> 09:00, 09:10 -> 09:15)
+  const mins = d.getMinutes();
+  const rounded = Math.round(mins / 15) * 15;
+  d.setMinutes(rounded, 0, 0);
+  
+  // Se l'arrotondamento porta al passato rispetto ad ora + 5 min, aggiungi 15 min
+  const now = new Date();
+  if (d.getTime() < now.getTime() + 5 * 60 * 1000) {
+    d.setMinutes(d.getMinutes() + 15);
+  }
+
   return d.toISOString();
 }
 
@@ -89,7 +101,7 @@ export function resolveOrderDraft(
   barName: string,
   item: string,
   time: string,
-): OrderDraft | { error: string } {
+): OrderDraft | { error: string; suggestions?: string[] } {
   const bar = findBar(barName);
   if (!bar) {
     return {
@@ -99,12 +111,19 @@ export function resolveOrderDraft(
 
   const menuItem = findMenuItem(bar.menu, item);
   if (!menuItem) {
+    // Trova suggerimenti nella stessa categoria o i più popolari
+    const suggestions = bar.menu
+      .slice(0, 5)
+      .map((m) => m.name);
+
     return {
-      error: `"${item}" non è nel menu di ${bar.name}. Prova: ${bar.menu.slice(0, 4).map((m) => m.name).join(", ")}.`,
+      error: `"${item}" non è disponibile presso ${bar.name}.`,
+      suggestions,
     };
   }
 
-  const pickupLabel = formatPickupLabel(time);
+  const pickupLabel = formatPickupLabel(time.includes(":") ? time : "09:00");
+  const isoTime = timeToIsoToday(time.includes(":") ? time : "");
 
   return {
     barId: bar.id,
@@ -112,7 +131,7 @@ export function resolveOrderDraft(
     itemId: menuItem.id,
     itemName: menuItem.name,
     price: menuItem.price,
-    time: timeToIsoToday(time.includes(":") ? time : "09:00"),
+    time: isoTime,
     pickupLabel,
     estimatedTotal: formatPrice(menuItem.price),
   };

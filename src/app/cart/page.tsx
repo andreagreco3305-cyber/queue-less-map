@@ -17,7 +17,7 @@ export default function CartPage() {
             <ShoppingBag className="h-10 w-10 text-stone-300" strokeWidth={1.5} />
           </div>
           <h2 className="crazy-title text-3xl mb-3">Vuoto.</h2>
-          <p className="text-sm font-bold text-stone-400 uppercase tracking-tight mb-10">Il predatore ha fame. <br />Aggiungi qualcosa al bottino.</p>
+          <p className="text-sm font-bold text-stone-400 uppercase tracking-tight mb-10">Il carrello è vuoto. <br />Seleziona un prodotto dai bar.</p>
           <Link href="/home" className="crazy-button">
              <span>Esplora Bar</span>
           </Link>
@@ -34,7 +34,7 @@ export default function CartPage() {
             <span className="h-1.5 w-1.5 rounded-full bg-black" />
             Ordine da {lines[0].barName}
           </div>
-          <h1 className="crazy-title text-5xl text-black">IL TUO<br />BOTTINO</h1>
+          <h1 className="crazy-title text-5xl text-black">IL TUO<br />ORDINE</h1>
         </div>
 
         <div className="space-y-6">

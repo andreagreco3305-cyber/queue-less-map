@@ -1,6 +1,7 @@
 import { streamText } from "ai";
 import { QUEUE_LESS_SYSTEM_PROMPT } from "@/lib/ai/system-prompt";
 import { getOpenRouterApiKey, getOpenRouterModel } from "@/lib/ai/openrouter";
+import { preparaOrdineTool } from "@/lib/ai/tools";
 
 export const maxDuration = 30;
 
@@ -17,8 +18,10 @@ export async function POST(req: Request) {
       model: getOpenRouterModel(),
       system: QUEUE_LESS_SYSTEM_PROMPT,
       messages,
-      // Temporaneamente rimosso il tool per isolare l'Internal Server Error
-      maxSteps: 1, 
+      tools: {
+        preparaOrdine: preparaOrdineTool,
+      },
+      maxSteps: 5, 
     });
 
     return result.toDataStreamResponse();

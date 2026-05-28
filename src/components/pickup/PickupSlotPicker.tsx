@@ -16,10 +16,10 @@ export function PickupSlotPicker({ barId }: { barId: string }) {
     <div className="space-y-4">
       <div className="flex grid grid-cols-3 gap-3">
         {slots.map((slot) => {
-          const selected = pickup?.id === slot.id;
+          const selected = pickup?.iso === slot.iso;
           return (
             <button
-              key={slot.id}
+              key={slot.iso}
               type="button"
               onClick={() => setPickup(slot)}
               className={`flex flex-col items-center justify-center rounded-2xl border-2 py-4 transition-all active:scale-95 ${

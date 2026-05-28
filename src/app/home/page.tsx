@@ -21,13 +21,13 @@ function HomeContent() {
             <Sparkles className="h-6 w-6 shrink-0 fill-white" />
             <div>
               <p className="font-black uppercase tracking-widest text-base italic">Bentornato</p>
-              <p className="mt-0.5 text-stone-400 font-bold tracking-tight text-xs leading-snug">Il predatore è pronto. Sbrana la coda oggi stesso.</p>
+              <p className="mt-0.5 text-stone-400 font-bold tracking-tight text-xs leading-snug">Accesso eseguito. La tua velocità è priorità assoluta.</p>
             </div>
           </div>
         )}
 
         {/* Search Bar Premium */}
-        <div className="mb-10 relative group animate-crazy-in">
+        <div className="mb-6 relative group animate-crazy-in">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-stone-300 group-focus-within:text-black transition-colors" />
           <input 
             type="text" 
@@ -36,7 +36,7 @@ function HomeContent() {
           />
         </div>
 
-        <div className="mb-8 flex items-end justify-between animate-crazy-in">
+        <div className="mb-6 flex items-end justify-between animate-crazy-in">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-stone-400">
               <MapPin className="h-3 w-3" strokeWidth={3} />
@@ -48,7 +48,7 @@ function HomeContent() {
           </div>
         </div>
 
-        <div className="space-y-8 pb-20 animate-crazy-in">
+        <div className="space-y-6 pb-10 animate-crazy-in">
           {BARS.map((bar) => (
             <BarCard key={bar.id} bar={bar} />
           ))}
