@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: "Queue Less — Salta la fila",
   description:
     "Ordina in anticipo e ritira in 30 secondi. Zero coda, zero ansia.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
