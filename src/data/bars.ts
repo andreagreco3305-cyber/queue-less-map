@@ -95,29 +95,6 @@ export const BARS: Bar[] = [
       { id: "c6", name: "Succo detox", price: 4.0, category: "bevande" },
     ],
   },
-  {
-    id: "brera",
-    name: "Bottega Brera",
-    tagline: "Quartiere Brera — Milano",
-    address: "Via Brera, 15 — Milano",
-    waitMinutes: 5,
-    emoji: "🥐",
-    image:
-      "https://images.unsplash.com/photo-1442512595331-e89e736b0e98?w=800&h=500&fit=crop&q=80",
-    rating: 4.8,
-    reviewCount: 276,
-    priceLevel: 2,
-    cuisine: "Brunch · Specialty coffee",
-    menu: [
-      { id: "b1", name: "Espresso", price: 1.6, category: "caffè" },
-      { id: "b2", name: "Flat white", price: 2.8, category: "caffè" },
-      { id: "b3", name: "Caffè freddo", price: 2.5, category: "caffè" },
-      { id: "b4", name: "Bombolone", price: 2.2, category: "colazione" },
-      { id: "b5", name: "Focaccia olive", price: 3.0, category: "panini" },
-      { id: "b6", name: "Panino salmone", price: 7.5, category: "panini" },
-      { id: "b7", name: "Tè freddo pesca", price: 3.0, category: "bevande" },
-    ],
-  },
 ];
 
 export function getBarById(id: string): Bar | undefined {
