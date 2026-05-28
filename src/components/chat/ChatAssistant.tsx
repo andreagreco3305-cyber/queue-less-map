@@ -79,11 +79,15 @@ export function ChatAssistant() {
               className="flex-1 space-y-8 overflow-y-auto px-8 py-8 bg-white"
             >
               {messages.length === 0 && (
-                <div className="rounded-[2rem] bg-stone-50 p-8">
-                  <h3 className="crazy-title text-3xl mb-3 text-black">Ciao.</h3>
-                  <p className="text-sm font-bold text-stone-400 uppercase tracking-widest leading-relaxed">
-                    Siamo qui per aiutarti. <br />
-                    Dì: <span className="text-black italic">&quot;Un espresso al Bar Centrale tra 5 min&quot;</span>
+                <div className="rounded-[2.5rem] bg-stone-50 p-10 border border-stone-100">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-stone-300 mb-6 italic">
+                    <span className="h-1.5 w-1.5 rounded-full bg-black animate-pulse" />
+                    AI Concierge Active
+                  </div>
+                  <h3 className="crazy-title text-4xl mb-4 text-black leading-none">PRONTO.</h3>
+                  <p className="text-sm font-bold text-stone-400 uppercase tracking-tight leading-relaxed">
+                    In attesa delle tue coordinate. <br />
+                    Esempio: <span className="text-black italic">&quot;Caffè al Bar Centrale alle 09:15&quot;</span>
                   </p>
                 </div>
               )}
