@@ -60,15 +60,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [status, setStatus] = useState<AuthStatus>("loading");
   const [isDemo, setIsDemo] = useState(false);
-  const [configError, setConfigError] = useState<string | null>(null);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
   const refresh = useCallback(async () => {
-    if (isDemo) return; // Non sovrascrivere se siamo in modalità demo
+    if (isDemo) return;
     if (!supabase) {
-      setConfigError(
-        "Configura .env.local: URL + PUBLISHABLE_KEY (o ANON_KEY).",
-      );
       setStatus("guest");
       return;
     }
@@ -83,11 +79,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, isDemo]);
 
   useEffect(() => {
-    if (isDemo) return; // Ignora supabase in demo
+    if (isDemo) return;
     if (!supabase) {
-      setConfigError(
-        "Configura .env.local: URL + PUBLISHABLE_KEY (o ANON_KEY).",
-      );
       setStatus("guest");
       return;
     }
@@ -117,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(
     async (email: string, password: string) => {
       setIsDemo(false);
-      if (!supabase) return { error: configError ?? "Supabase non configurato." };
+      if (!supabase) return { error: "Supabase non configurato." };
       const origin =
         process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin;
       const { error } = await supabase.auth.signUp({
@@ -130,13 +123,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) return { error: error.message };
       return {};
     },
-    [supabase, configError],
+    [supabase],
   );
 
   const signIn = useCallback(
     async (email: string, password: string) => {
       setIsDemo(false);
-      if (!supabase) return { error: configError ?? "Supabase non configurato." };
+      if (!supabase) return { error: "Supabase non configurato." };
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -152,7 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       return {};
     },
-    [supabase, configError],
+    [supabase],
   );
 
   const signInAsDemo = useCallback(() => {
@@ -176,7 +169,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const resendConfirmation = useCallback(
     async (email: string) => {
-      if (!supabase) return { error: configError ?? "Supabase non configurato." };
+      if (!supabase) return { error: "Supabase non configurato." };
       const origin =
         process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin;
       const { error } = await supabase.auth.resend({
@@ -187,7 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) return { error: error.message };
       return {};
     },
-    [supabase, configError],
+    [supabase],
   );
 
   const user = mapUser(session?.user ?? null);
@@ -209,11 +202,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {configError && (
-        <div className="bg-amber-50 px-4 py-2 text-center text-xs text-amber-900">
-          {configError}
-        </div>
-      )}
       {children}
     </AuthContext.Provider>
   );
