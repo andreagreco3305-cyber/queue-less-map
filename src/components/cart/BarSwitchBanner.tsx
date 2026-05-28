@@ -8,29 +8,29 @@ export function BarSwitchBanner() {
   if (!barSwitchPrompt) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-md px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-      <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-xl">
-        <p className="text-sm font-semibold text-stone-900">
-          Cambiare bar?
+    <div className="fixed inset-x-0 bottom-8 z-[100] mx-auto max-w-sm px-6 animate-in slide-in-from-bottom-10 fade-in duration-500">
+      <div className="crazy-card !p-8 shadow-2xl !bg-black !text-white border-none">
+        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-stone-400 mb-2 italic">
+          Conflitto Territoriale
         </p>
-        <p className="mt-1 text-xs text-stone-500">
-          Il carrello ha prodotti da un altro locale. Vuoi svuotarlo e ordinare
-          da <strong>{barSwitchPrompt}</strong>?
+        <h3 className="crazy-title text-3xl mb-4 leading-none text-white">CAMBIARE<br />LOCALE?</h3>
+        <p className="text-xs font-bold text-stone-300 uppercase tracking-tight leading-relaxed mb-8">
+          Il carrello contiene prodotti di un altro bar. Vuoi svuotarlo per ordinare da <span className="text-white italic">{barSwitchPrompt}</span>?
         </p>
-        <div className="mt-3 flex gap-2">
+        <div className="flex gap-4">
           <button
             type="button"
             onClick={cancelBarSwitch}
-            className="flex-1 rounded-xl border border-stone-200 py-2.5 text-sm font-medium text-stone-700"
+            className="flex-1 h-14 rounded-2xl border-2 border-stone-800 text-[10px] font-black uppercase tracking-widest text-stone-400 hover:text-white transition-colors"
           >
-            Annulla
+            ANNULLA
           </button>
           <button
             type="button"
             onClick={confirmBarSwitch}
-            className="flex-1 rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold text-white"
+            className="flex-1 h-14 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all"
           >
-            Sì, svuota
+            SÌ, SVUOTA
           </button>
         </div>
       </div>
