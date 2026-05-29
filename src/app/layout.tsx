@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   description:
     "Ordina in anticipo e ritira in 30 secondi. Zero coda, zero ansia.",
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo.svg",
+    apple: "/logo.svg",
   },
 };
 
